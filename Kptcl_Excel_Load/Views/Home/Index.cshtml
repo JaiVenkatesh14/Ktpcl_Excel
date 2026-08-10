@@ -367,7 +367,7 @@
 
 
 <!-- =========================
-     UPLOAD
+     UPLOAD EXCEL
      ========================= -->
 
 <div id="upload"
@@ -386,7 +386,7 @@
                 <h2>Upload Excel</h2>
 
                 <p>
-                    Import project survey data
+                    Import project survey data into Oracle
                 </p>
 
             </div>
@@ -396,36 +396,57 @@
     </div>
 
 
-    <div class="upload-area">
+    <div class="upload-area"
+         id="uploadArea">
 
         <div class="upload-large-icon">
             ↑
         </div>
 
+
         <h3>
             Upload Excel File
         </h3>
 
+
         <p>
-            Drag and drop your Excel file here
-            or select a file from your computer
+            Select the Excel file containing
+            Work Orders, Stations and Line Codes
         </p>
+
 
         <input type="file"
                id="excelFile"
-               accept=".xlsx,.xls"
+               accept=".xlsx"
                hidden />
+
 
         <button class="primary-button upload-button"
                 type="button"
-                onclick="document.getElementById('excelFile').click()">
+                id="browseFileButton">
 
             Browse File
 
         </button>
 
+
         <div id="selectedFile"
              class="selected-file">
+        </div>
+
+
+        <button class="upload-submit-button"
+                type="button"
+                id="uploadExcelButton"
+                disabled>
+
+            Upload to Database
+
+        </button>
+
+
+        <div id="uploadStatus"
+             class="upload-status">
         </div>
 
     </div>
@@ -1104,6 +1125,561 @@
                 `;
 
             }
+
+        }
+
+                // =====================================================
+        // EXCEL UPLOAD
+        // =====================================================
+
+        const excelFile =
+            document.getElementById("excelFile");
+
+        const browseFileButton =
+            document.getElementById("browseFileButton");
+
+        const uploadExcelButton =
+            document.getElementById("uploadExcelButton");
+
+        const selectedFile =
+            document.getElementById("selectedFile");
+
+        const uploadStatus =
+            document.getElementById("uploadStatus");
+
+        const uploadArea =
+            document.getElementById("uploadArea");
+
+
+        // =====================================================
+        // BROWSE FILE
+        // =====================================================
+
+        browseFileButton.addEventListener(
+            "click",
+            function () {
+
+                excelFile.click();
+
+            }
+        );
+
+
+        // =====================================================
+        // FILE SELECTED
+        // =====================================================
+
+        excelFile.addEventListener(
+            "change",
+            function () {
+
+                clearUploadStatus();
+
+                if (!excelFile.files ||
+                    excelFile.files.length === 0) {
+
+                    selectedFile.innerHTML = "";
+
+                    uploadExcelButton.disabled = true;
+
+                    return;
+                }
+
+
+                const file =
+                    excelFile.files[0];
+
+
+                // ---------------------------------------------
+                // Check extension
+                // ---------------------------------------------
+
+                const fileName =
+                    file.name.toLowerCase();
+
+
+                if (!fileName.endsWith(".xlsx")) {
+
+                    showUploadError(
+                        "Only .xlsx Excel files are allowed."
+                    );
+
+                    excelFile.value = "";
+
+                    uploadExcelButton.disabled = true;
+
+                    return;
+                }
+
+
+                // ---------------------------------------------
+                // Check file size
+                // ---------------------------------------------
+
+                const maxSize =
+                    10 * 1024 * 1024;
+
+
+                if (file.size > maxSize) {
+
+                    showUploadError(
+                        "File size cannot exceed 10 MB."
+                    );
+
+                    excelFile.value = "";
+
+                    uploadExcelButton.disabled = true;
+
+                    return;
+                }
+
+
+                // ---------------------------------------------
+                // Show selected file
+                // ---------------------------------------------
+
+                selectedFile.innerHTML = `
+
+                    <div class="selected-file-box">
+
+                        <span class="selected-file-icon">
+                            XLSX
+                        </span>
+
+                        <div class="selected-file-info">
+
+                            <strong>
+                                ${escapeHtml(file.name)}
+                            </strong>
+
+                            <small>
+                                ${formatFileSize(file.size)}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                uploadExcelButton.disabled = false;
+
+            }
+        );
+
+
+        // =====================================================
+        // UPLOAD
+        // =====================================================
+
+        uploadExcelButton.addEventListener(
+            "click",
+            async function () {
+
+                if (!excelFile.files ||
+                    excelFile.files.length === 0) {
+
+                    showUploadError(
+                        "Please select an Excel file first."
+                    );
+
+                    return;
+                }
+
+
+                const file =
+                    excelFile.files[0];
+
+
+                // Disable controls
+
+                uploadExcelButton.disabled = true;
+
+                browseFileButton.disabled = true;
+
+
+                uploadExcelButton.innerText =
+                    "Uploading...";
+
+
+                showUploadInfo(
+                    "Validating Excel file and importing data. Please wait..."
+                );
+
+
+                try {
+
+                    const formData =
+                        new FormData();
+
+
+                    formData.append(
+                        "file",
+                        file
+                    );
+
+
+                    // =========================================
+                    // CALL EXCEL IMPORT API
+                    // =========================================
+
+                    const response =
+                        await fetch(
+                                    "/api/ExcelImport/validate",
+                            {
+                                method: "POST",
+                                body: formData
+                            }
+                        );
+
+
+                   const responseText =
+    await response.text();
+
+console.log(
+    "EXCEL IMPORT HTTP STATUS:",
+    response.status
+);
+
+console.log(
+    "EXCEL IMPORT RAW RESPONSE:",
+    responseText
+);
+
+
+let result = null;
+
+try {
+
+    result = responseText
+        ? JSON.parse(responseText)
+        : null;
+
+}
+catch (jsonError) {
+
+    console.error(
+        "Excel Import JSON Error:",
+        jsonError
+    );
+
+    throw new Error(
+        "Server returned an invalid response."
+    );
+}
+
+
+console.log(
+    "EXCEL IMPORT RESPONSE:",
+    result
+);
+
+
+if (!response.ok ||
+    !result ||
+    result.success === false) {
+
+    let message =
+        result?.message ||
+        `Excel import failed. Server returned HTTP ${response.status}.`;
+
+
+    if (result?.errors &&
+        result.errors.length > 0) {
+
+        message += "<br><br>";
+
+        message +=
+            "<strong>Errors:</strong><br>";
+
+
+        result.errors.forEach(
+            function (error) {
+
+                message +=
+                    `• ${escapeHtml(error.message)}<br>`;
+
+            }
+        );
+    }
+
+
+    showUploadError(message);
+
+    return;
+}
+
+
+                    // =========================================
+                    // API ERROR
+                    // =========================================
+
+                    if (!response.ok ||
+                        result.success === false) {
+
+                        let message =
+                            result.message ||
+                            "Excel import failed.";
+
+
+                        // Show detailed errors
+
+                        if (result.errors &&
+                            result.errors.length > 0) {
+
+                            message += "<br><br>";
+
+                            message +=
+                                "<strong>Errors:</strong><br>";
+
+
+                            result.errors.forEach(
+                                function (error) {
+
+                                    message +=
+                                        `• ${escapeHtml(error.message)}<br>`;
+
+                                }
+                            );
+                        }
+
+
+                        showUploadError(message);
+
+                        return;
+                    }
+
+
+                    // =========================================
+                    // SUCCESS
+                    // =========================================
+
+                    showUploadSuccess(
+                        result.message ||
+                        "Excel data imported successfully."
+                    );
+
+
+                    // Clear selected file
+
+                    excelFile.value = "";
+
+                    selectedFile.innerHTML = "";
+
+
+                    // =========================================
+                    // REFRESH DASHBOARD DATA
+                    // =========================================
+
+                    await Promise.all([
+                        loadWorkOrders(),
+                        loadStations(),
+                        loadLines()
+                    ]);
+
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Excel Upload Error:",
+                        error
+                    );
+
+
+                    showUploadError(
+                        "Unable to connect to the Excel import API."
+                    );
+
+                }
+                finally {
+
+                    uploadExcelButton.disabled = true;
+
+                    browseFileButton.disabled = false;
+
+                    uploadExcelButton.innerText =
+                        "Upload to Database";
+
+                }
+
+            }
+        );
+
+
+        // =====================================================
+        // DRAG AND DROP
+        // =====================================================
+
+        uploadArea.addEventListener(
+            "dragover",
+            function (event) {
+
+                event.preventDefault();
+
+                uploadArea.classList.add(
+                    "drag-over"
+                );
+
+            }
+        );
+
+
+        uploadArea.addEventListener(
+            "dragleave",
+            function () {
+
+                uploadArea.classList.remove(
+                    "drag-over"
+                );
+
+            }
+        );
+
+
+        uploadArea.addEventListener(
+            "drop",
+            function (event) {
+
+                event.preventDefault();
+
+                uploadArea.classList.remove(
+                    "drag-over"
+                );
+
+
+                const files =
+                    event.dataTransfer.files;
+
+
+                if (!files ||
+                    files.length === 0) {
+
+                    return;
+                }
+
+
+                excelFile.files = files;
+
+
+                excelFile.dispatchEvent(
+                    new Event("change")
+                );
+
+            }
+        );
+
+
+        // =====================================================
+        // STATUS FUNCTIONS
+        // =====================================================
+
+        function showUploadSuccess(message) {
+
+            uploadStatus.innerHTML = `
+
+                <div class="upload-message success">
+
+                    <span class="message-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        ${message}
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function showUploadError(message) {
+
+            uploadStatus.innerHTML = `
+
+                <div class="upload-message error">
+
+                    <span class="message-icon">
+                        !
+                    </span>
+
+                    <span>
+                        ${message}
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function showUploadInfo(message) {
+
+            uploadStatus.innerHTML = `
+
+                <div class="upload-message info">
+
+                    <span class="message-icon">
+                        ...
+                    </span>
+
+                    <span>
+                        ${message}
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+
+
+        function clearUploadStatus() {
+
+            uploadStatus.innerHTML = "";
+
+        }
+
+
+        // =====================================================
+        // FILE SIZE
+        // =====================================================
+
+        function formatFileSize(bytes) {
+
+            if (bytes < 1024)
+                return bytes + " B";
+
+            if (bytes < 1024 * 1024)
+                return (bytes / 1024).toFixed(1) + " KB";
+
+            return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+
+        }
+
+
+        // =====================================================
+        // HTML ESCAPE
+        // =====================================================
+
+        function escapeHtml(value) {
+
+            if (value === null ||
+                value === undefined) {
+
+                return "";
+            }
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
 
         }
 

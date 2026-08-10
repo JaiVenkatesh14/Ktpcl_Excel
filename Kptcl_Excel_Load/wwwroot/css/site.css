@@ -1082,3 +1082,204 @@ tbody tr:hover {
         min-width: 800px;
     }
 }
+
+/* =========================================
+   EXCEL UPLOAD
+   ========================================= */
+
+.upload-area {
+    padding: 40px 30px;
+    text-align: center;
+    border: 2px dashed #d8e0ea;
+    border-radius: 10px;
+    margin: 20px;
+    transition: all 0.2s ease;
+}
+
+
+    .upload-area.drag-over {
+        border-color: #1769aa;
+        background: #f5f9fd;
+    }
+
+
+/* Upload icon */
+
+.upload-large-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #f2edff;
+    color: #7655c7;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+.upload-area h3 {
+    margin: 0 0 8px;
+    color: #26384f;
+    font-size: 16px;
+}
+
+
+.upload-area p {
+    margin: 0 auto 20px;
+    max-width: 500px;
+    color: #7b8797;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+/* Browse */
+
+.upload-button {
+    margin-bottom: 15px;
+}
+
+
+/* Selected file */
+
+.selected-file {
+    min-height: 20px;
+    margin: 5px auto 15px;
+    max-width: 450px;
+}
+
+
+.selected-file-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1px solid #e0e6ed;
+    border-radius: 8px;
+    background: #f8fafc;
+    text-align: left;
+}
+
+
+.selected-file-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    background: #e8f5ed;
+    color: #188456;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+
+.selected-file-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+
+    .selected-file-info strong {
+        color: #33445a;
+        font-size: 11px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    .selected-file-info small {
+        color: #8995a5;
+        font-size: 9px;
+    }
+
+
+/* Upload button */
+
+.upload-submit-button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #1769aa;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+
+    .upload-submit-button:hover:not(:disabled) {
+        background: #125789;
+        transform: translateY(-1px);
+    }
+
+
+    .upload-submit-button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+
+
+/* =========================================
+   UPLOAD STATUS
+   ========================================= */
+
+.upload-status {
+    max-width: 650px;
+    margin: 18px auto 0;
+}
+
+
+.upload-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 7px;
+    text-align: left;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+    .upload-message.success {
+        background: #edf9f2;
+        border: 1px solid #ccebd9;
+        color: #18784d;
+    }
+
+
+    .upload-message.error {
+        background: #fff1f1;
+        border: 1px solid #f0cccc;
+        color: #b33b3b;
+    }
+
+
+    .upload-message.info {
+        background: #eff6fc;
+        border: 1px solid #d2e4f4;
+        color: #28658e;
+    }
+
+
+.message-icon {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 800;
+}
