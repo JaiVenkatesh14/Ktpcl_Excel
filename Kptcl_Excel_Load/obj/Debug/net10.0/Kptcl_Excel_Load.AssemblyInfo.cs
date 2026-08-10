@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Kptcl_Excel_Load")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f8ccd66988d485bab26696f992e62885d7ac87a8")]
 [assembly: System.Reflection.AssemblyProductAttribute("Kptcl_Excel_Load")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Kptcl_Excel_Load")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

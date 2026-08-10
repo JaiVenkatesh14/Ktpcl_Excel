@@ -535,11 +535,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dell\\source\\repos\\Kptcl_Excel_Load\\Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj",
+      "projectUniqueName": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj",
       "projectName": "Kptcl_Excel_Load",
-      "projectPath": "C:\\Users\\dell\\source\\repos\\Kptcl_Excel_Load\\Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj",
+      "projectPath": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj",
       "packagesPath": "C:\\Users\\dell\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dell\\source\\repos\\Kptcl_Excel_Load\\Kptcl_Excel_Load\\obj\\",
+      "outputPath": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
