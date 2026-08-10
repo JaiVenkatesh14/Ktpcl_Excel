@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>
+        @ViewData["Title"] - KPTCL
+    </title>
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+</head>
+
+<body>
+
+    <header>
+
+        <nav class="navbar">
+
+            <div class="navbar-container">
+
+                <a class="navbar-brand"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    KPTCL
+
+                </a>
+
+                <div class="navbar-links">
+
+                    <a asp-controller="Home"
+                       asp-action="Index">
+
+                        Dashboard
+
+                    </a>
+
+                    <a href="/swagger"
+                       target="_blank">
+
+                        API / Swagger
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <main>
+
+        @RenderBody()
+
+    </main>
+
+
+    <footer>
+
+        <div class="footer-container">
+
+            KPTCL Survey Data Management System
+
+        </div>
+
+    </footer>
+
+
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false)
+
+</body>
+
+</html>

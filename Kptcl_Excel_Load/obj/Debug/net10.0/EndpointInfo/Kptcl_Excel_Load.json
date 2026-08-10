@@ -1,0 +1,27 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Kptcl_Excel_Load",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Oracle/test-connection": {
+      "get": {
+        "tags": [
+          "Oracle"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": { },
+  "tags": [
+    {
+      "name": "Oracle"
+    }
+  ]
+}

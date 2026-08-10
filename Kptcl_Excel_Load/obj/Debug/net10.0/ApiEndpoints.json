@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "Kptcl_Excel_Load.Controllers.OracleController",
+    "Method": "TestConnection",
+    "RelativePath": "api/Oracle/test-connection",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
