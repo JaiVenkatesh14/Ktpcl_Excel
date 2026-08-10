@@ -123,13 +123,20 @@
 
             <div class="sidebar-footer">
 
-                <div class="database-status">
+                <div class="database-status"
+                     id="databaseStatus">
 
-                    <span class="online-dot"></span>
+                    <span class="online-dot"
+                          id="databaseStatusDot"></span>
 
                     <div>
+
                         <strong>Oracle Database</strong>
-                        <small>Connected</small>
+
+                        <small id="databaseStatusText">
+                            Checking...
+                        </small>
+
                     </div>
 
                 </div>
@@ -219,6 +226,168 @@
     @await RenderSectionAsync(
         "Scripts",
         required: false)
+
+    <script>
+
+            // =====================================================
+            // ORACLE DATABASE STATUS
+            // =====================================================
+
+            async function checkDatabaseStatus() {
+
+                const statusText =
+                    document.getElementById("databaseStatusText");
+
+                const statusDot =
+                    document.getElementById("databaseStatusDot");
+
+
+                if (!statusText || !statusDot) {
+                    return;
+                }
+
+
+                // ---------------------------------------------
+                // Checking
+                // ---------------------------------------------
+
+                statusText.innerText =
+                    "Checking...";
+
+                statusDot.classList.remove(
+                    "database-online",
+                    "database-offline"
+                );
+
+                statusDot.classList.add(
+                    "database-checking"
+                );
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "/api/DatabaseHealth",
+                            {
+                                method: "GET",
+                                headers: {
+                                    "Accept": "application/json"
+                                },
+                                cache: "no-store"
+                            }
+                        );
+
+
+                    let result = null;
+
+
+                    try {
+
+                        result =
+                            await response.json();
+
+                    }
+                    catch {
+
+                        result = null;
+
+                    }
+
+
+                    // -----------------------------------------
+                    // Connected
+                    // -----------------------------------------
+
+                    if (
+                        response.ok &&
+                        result &&
+                        result.connected === true
+                    ) {
+
+                        statusText.innerText =
+                            "Connected";
+
+                        statusDot.classList.remove(
+                            "database-checking",
+                            "database-offline"
+                        );
+
+                        statusDot.classList.add(
+                            "database-online"
+                        );
+
+                        return;
+                    }
+
+
+                    // -----------------------------------------
+                    // Disconnected
+                    // -----------------------------------------
+
+                    statusText.innerText =
+                        "Disconnected";
+
+                    statusDot.classList.remove(
+                        "database-checking",
+                        "database-online"
+                    );
+
+                    statusDot.classList.add(
+                        "database-offline"
+                    );
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Database health check failed:",
+                        error
+                    );
+
+
+                    statusText.innerText =
+                        "Disconnected";
+
+
+                    statusDot.classList.remove(
+                        "database-checking",
+                        "database-online"
+                    );
+
+                    statusDot.classList.add(
+                        "database-offline"
+                    );
+
+                }
+
+            }
+
+
+            // =====================================================
+            // INITIAL CHECK
+            // =====================================================
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                function () {
+
+                    checkDatabaseStatus();
+
+                }
+            );
+
+
+            // =====================================================
+            // CHECK EVERY 30 SECONDS
+            // =====================================================
+
+            setInterval(
+                checkDatabaseStatus,
+                30000
+            );
+
+    </script>
 
 </body>
 

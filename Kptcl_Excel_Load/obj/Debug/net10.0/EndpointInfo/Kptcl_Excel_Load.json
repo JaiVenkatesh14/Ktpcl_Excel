@@ -5,6 +5,18 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/DatabaseHealth": {
+      "get": {
+        "tags": [
+          "DatabaseHealth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/ExcelImport/validate": {
       "post": {
         "tags": [
@@ -88,6 +100,9 @@
   },
   "components": { },
   "tags": [
+    {
+      "name": "DatabaseHealth"
+    },
     {
       "name": "ExcelImport"
     },

@@ -1,5 +1,15 @@
 [
   {
+    "ContainingType": "Kptcl_Excel_Load.Controllers.DatabaseHealthController",
+    "Method": "CheckDatabase",
+    "RelativePath": "api/DatabaseHealth",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "KPTCL_API_STAGG.Controllers.ExcelImportController",
     "Method": "ValidateExcel",
     "RelativePath": "api/ExcelImport/validate",

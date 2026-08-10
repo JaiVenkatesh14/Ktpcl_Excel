@@ -1592,3 +1592,39 @@ tbody tr:hover {
             width: 220px;
         }
 }
+
+/* =====================================================
+   DATABASE CONNECTION STATUS
+   ===================================================== */
+
+.online-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+/* Checking */
+
+.database-checking {
+    background: #f0ad4e;
+    box-shadow: 0 0 0 3px rgba(240, 173, 78, 0.12);
+}
+
+
+/* Connected */
+
+.database-online {
+    background: #20c997;
+    box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.12);
+}
+
+
+/* Disconnected */
+
+.database-offline {
+    background: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
+}
