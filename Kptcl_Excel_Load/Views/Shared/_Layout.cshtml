@@ -8,9 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0" />
 
-    <title>
-        @ViewData["Title"] - KPTCL
-    </title>
+    <title>@ViewData["Title"] - KPTCL Work Details</title>
 
     <link rel="stylesheet"
           href="~/css/site.css"
@@ -20,61 +18,209 @@
 
 <body>
 
-    <header>
+    <div class="app-container">
 
-        <nav class="navbar">
+        <!-- =========================
+             SIDEBAR
+             ========================= -->
 
-            <div class="navbar-container">
+        <aside class="sidebar">
 
-                <a class="navbar-brand"
-                   asp-controller="Home"
-                   asp-action="Index">
+            <div class="sidebar-brand">
 
-                    KPTCL
+                <div class="brand-icon">
+                    ▤
+                </div>
 
-                </a>
+                <div class="brand-text">
 
-                <div class="navbar-links">
-
-                    <a asp-controller="Home"
-                       asp-action="Index">
-
-                        Dashboard
-
-                    </a>
-
-                    <a href="/swagger"
-                       target="_blank">
-
-                        API / Swagger
-
-                    </a>
+                    <strong>Work Details</strong>
+                    <span>Management</span>
 
                 </div>
 
             </div>
 
-        </nav>
 
-    </header>
+            <nav class="sidebar-nav">
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="nav-item active">
+
+                    <span class="nav-icon">⌂</span>
+
+                    <span>Dashboard</span>
+
+                </a>
 
 
-    <main>
+                <a href="#upload"
+                   class="nav-item">
 
-        @RenderBody()
+                    <span class="nav-icon">↑</span>
 
-    </main>
+                    <span>Upload Excel</span>
+
+                </a>
 
 
-    <footer>
+                <a href="#work-orders"
+                   class="nav-item">
 
-        <div class="footer-container">
+                    <span class="nav-icon">▣</span>
 
-            KPTCL Survey Data Management System
+                    <span>Work Details</span>
+
+                </a>
+
+
+                <a href="#stations"
+                   class="nav-item">
+
+                    <span class="nav-icon">▦</span>
+
+                    <span>Station Details</span>
+
+                </a>
+
+
+                <a href="#lines"
+                   class="nav-item">
+
+                    <span class="nav-icon">◇</span>
+
+                    <span>Line Code Details</span>
+
+                </a>
+
+
+                <a href="/swagger"
+                   target="_blank"
+                   class="nav-item">
+
+                    <span class="nav-icon">◇</span>
+
+                    <span>API / Swagger</span>
+
+                </a>
+
+
+                <a href="#history"
+                   class="nav-item">
+
+                    <span class="nav-icon">◷</span>
+
+                    <span>Upload History</span>
+
+                </a>
+
+
+                <a href="#settings"
+                   class="nav-item">
+
+                    <span class="nav-icon">⚙</span>
+
+                    <span>Settings</span>
+
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-footer">
+
+                <div class="database-status">
+
+                    <span class="online-dot"></span>
+
+                    <div>
+                        <strong>Oracle Database</strong>
+                        <small>Connected</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =========================
+             MAIN CONTENT
+             ========================= -->
+
+        <div class="main-container">
+
+
+            <!-- TOP BAR -->
+
+            <header class="topbar">
+
+                <div>
+
+                    <span class="breadcrumb">
+                        KPTCL
+                    </span>
+
+                    <span class="breadcrumb-separator">
+                        /
+                    </span>
+
+                    <span class="breadcrumb-current">
+                        Dashboard
+                    </span>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="notification">
+                        ♧
+                        <span class="notification-dot"></span>
+                    </div>
+
+
+                    <div class="user-info">
+
+                        <div class="user-avatar">
+                            A
+                        </div>
+
+                        <div>
+
+                            <strong>Admin</strong>
+
+                            <small>
+                                Administrator
+                            </small>
+
+                        </div>
+
+                        <span class="dropdown-arrow">
+                            ▼
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- PAGE -->
+
+            <main class="main-content">
+
+                @RenderBody()
+
+            </main>
+
 
         </div>
 
-    </footer>
+    </div>
 
 
     @await RenderSectionAsync(

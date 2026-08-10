@@ -153,7 +153,6 @@ E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\rjsmcshtml.dswa.ca
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\scopedcss\bundle\Kptcl_Excel_Load.styles.css
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\scopedcss\projectbundle\Kptcl_Excel_Load.bundle.scp.css
-E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\compressed\rkqv6tvtji-{0}-4dgi1o66f4-4dgi1o66f4.gz
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\compressed\ot1xdplu0q-{0}-61n19gt1b8-61n19gt1b8.gz
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\compressed\nfy1kehr04-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\compressed\nwbugfhh1v-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -229,3 +228,4 @@ E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\refint\Kptcl_Excel
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\Kptcl_Excel_Load.pdb
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\Kptcl_Excel_Load.genruntimeconfig.cache
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\ref\Kptcl_Excel_Load.dll
+E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\compressed\rkqv6tvtji-{0}-bkpicmd6w6-bkpicmd6w6.gz

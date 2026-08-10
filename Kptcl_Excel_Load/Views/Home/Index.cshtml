@@ -2,285 +2,145 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="dashboard">
 
-    <!-- Header -->
+<!-- =========================
+     PAGE HEADER
+     ========================= -->
 
-    <div class="dashboard-header">
+<div class="page-heading">
 
-        <div>
+    <div>
 
-            <h1>KPTCL Dashboard</h1>
+        <h1>Dashboard</h1>
 
-            <p>
-                Survey Data Management System
-            </p>
+        <p>
+            Welcome back, Admin
+        </p>
 
-        </div>
+    </div>
 
-        <div class="system-status">
+    <div class="system-status">
 
-            <span class="status-dot"></span>
+        <span class="status-dot"></span>
 
-            System Online
+        System Online
 
-        </div>
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     DATA FLOW
+     ========================= -->
+
+<div class="dashboard-card">
+
+    <div class="card-title">
+
+        <h2>Data Flow Overview</h2>
+
+        <span class="card-subtitle">
+            Excel survey data processing
+        </span>
 
     </div>
 
 
-    <!-- Statistics -->
+    <div class="data-flow">
 
-    <div class="stats-grid">
+        <div class="flow-item">
 
-        <div class="stat-card">
-
-            <div class="stat-icon work">
-                ▣
+            <div class="flow-icon excel">
+                XLS
             </div>
 
-            <div>
+            <strong>Excel File</strong>
 
-                <span>Work Orders</span>
-
-                <strong>0</strong>
-
-                <small>Total work orders</small>
-
-            </div>
+            <small>
+                Combined_work_details
+            </small>
 
         </div>
 
 
-        <div class="stat-card">
+        <div class="flow-arrow">
+            →
+        </div>
 
-            <div class="stat-icon station">
-                ▦
+
+        <div class="flow-item">
+
+            <div class="flow-icon api">
+                API
             </div>
 
-            <div>
+            <strong>Application / API</strong>
 
-                <span>Stations</span>
-
-                <strong>0</strong>
-
-                <small>Total substations</small>
-
-            </div>
+            <small>
+                Validate & Map
+            </small>
 
         </div>
 
 
-        <div class="stat-card">
+        <div class="flow-arrow">
+            →
+        </div>
 
-            <div class="stat-icon line">
-                ◇
+
+        <div class="flow-item">
+
+            <div class="flow-icon station">
+                ST
             </div>
 
-            <div>
+            <strong>Station Details</strong>
 
-                <span>Lines</span>
-
-                <strong>0</strong>
-
-                <small>Total line codes</small>
-
-            </div>
+            <small>
+                STATION_DETAILS
+            </small>
 
         </div>
 
 
-        <div class="stat-card">
-
-            <div class="stat-icon import">
-                ↑
-            </div>
-
-            <div>
-
-                <span>Imports</span>
-
-                <strong>0</strong>
-
-                <small>Successful imports</small>
-
-            </div>
-
+        <div class="flow-arrow">
+            →
         </div>
 
-    </div>
 
+        <div class="flow-item">
 
-    <!-- Main Area -->
-
-    <div class="content-grid">
-
-
-        <!-- Excel Upload -->
-
-        <div class="dashboard-card">
-
-            <div class="card-header">
-
-                <div>
-
-                    <h2>Excel Data Import</h2>
-
-                    <p>
-                        Upload project survey data
-                    </p>
-
-                </div>
-
-                <div class="card-symbol">
-                    ↑
-                </div>
-
+            <div class="flow-icon line">
+                LN
             </div>
 
+            <strong>Line Code</strong>
 
-            <div class="upload-area">
-
-                <div class="upload-symbol">
-                    ↑
-                </div>
-
-                <h3>
-                    Upload Excel File
-                </h3>
-
-                <p>
-                    Select the Excel file containing
-                    project survey data.
-                </p>
-
-
-                <input type="file"
-                       id="excelFile"
-                       accept=".xlsx,.xls"
-                       hidden />
-
-
-                <button type="button"
-                        class="select-button"
-                        onclick="document.getElementById('excelFile').click()">
-
-                    Choose Excel File
-
-                </button>
-
-
-                <div id="fileName"
-                     class="file-name">
-                </div>
-
-            </div>
+            <small>
+                LINE_CODE_DETAILS
+            </small>
 
         </div>
 
 
-        <!-- Database Tables -->
+        <div class="flow-arrow">
+            →
+        </div>
 
-        <div class="dashboard-card">
 
-            <div class="card-header">
+        <div class="flow-item">
 
-                <div>
-
-                    <h2>Database Tables</h2>
-
-                    <p>
-                        Oracle tables
-                    </p>
-
-                </div>
-
-                <div class="card-symbol">
-                    ▥
-                </div>
-
+            <div class="flow-icon database">
+                DB
             </div>
 
+            <strong>Oracle Database</strong>
 
-            <div class="table-list">
-
-
-                <div class="table-item">
-
-                    <div class="table-symbol">
-                        ▣
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Work Orders
-                        </strong>
-
-                        <small>
-                            WORK_ORDER
-                        </small>
-
-                    </div>
-
-                    <span>
-                        0
-                    </span>
-
-                </div>
-
-
-                <div class="table-item">
-
-                    <div class="table-symbol">
-                        ▦
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Stations
-                        </strong>
-
-                        <small>
-                            STATION_DETAILS
-                        </small>
-
-                    </div>
-
-                    <span>
-                        0
-                    </span>
-
-                </div>
-
-
-                <div class="table-item">
-
-                    <div class="table-symbol">
-                        ◇
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Lines
-                        </strong>
-
-                        <small>
-                            LINE_CODE_DETAILS
-                        </small>
-
-                    </div>
-
-                    <span>
-                        0
-                    </span>
-
-                </div>
-
-
-            </div>
+            <small>
+                WORK_ORDER
+            </small>
 
         </div>
 
@@ -289,428 +149,1040 @@
 </div>
 
 
-<style>
 
-    .dashboard {
-        max-width: 1400px;
-        margin: auto;
-        padding: 35px 25px;
-    }
+<!-- =========================
+     STATISTICS
+     ========================= -->
 
+<div class="stats-grid">
 
-    /* HEADER */
 
-    .dashboard-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-    }
+    <div class="stat-card">
 
-    .dashboard-header h1 {
-        margin: 0;
-        font-size: 32px;
-        color: #123b63;
-    }
+        <div class="stat-icon blue">
+            ▣
+        </div>
 
-    .dashboard-header p {
-        margin-top: 7px;
-        color: #6b7280;
-    }
+        <div class="stat-content">
 
+            <span>Total Work Orders</span>
 
-    .system-status {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+            <strong id="workOrderCount">0</strong>
 
-        padding: 10px 16px;
+            <small>
+                WORK_ORDER
+            </small>
 
-        background: #ecfdf5;
+        </div>
 
-        border: 1px solid #bbf7d0;
+    </div>
 
-        border-radius: 20px;
 
-        color: #15803d;
+    <div class="stat-card">
 
-        font-size: 14px;
-        font-weight: 600;
-    }
+        <div class="stat-icon green">
+            ▦
+        </div>
 
-    .status-dot {
-        width: 9px;
-        height: 9px;
+        <div class="stat-content">
 
-        background: #16a34a;
+            <span>Total Stations</span>
 
-        border-radius: 50%;
-    }
+            <strong id="stationCount">0</strong>
 
+            <small>
+                STATION_DETAILS
+            </small>
 
-    /* STATISTICS */
+        </div>
 
-    .stats-grid {
-        display: grid;
-        grid-template-columns:
-            repeat(4, 1fr);
+    </div>
 
-        gap: 20px;
 
-        margin-bottom: 25px;
-    }
+    <div class="stat-card">
 
-    .stat-card {
-        background: white;
+        <div class="stat-icon orange">
+            ◇
+        </div>
 
-        border: 1px solid #e5e7eb;
+        <div class="stat-content">
 
-        border-radius: 12px;
+            <span>Total Lines</span>
 
-        padding: 22px;
+            <strong id="lineCount">0</strong>
 
-        display: flex;
+            <small>
+                LINE_CODE_DETAILS
+            </small>
 
-        align-items: center;
+        </div>
 
-        gap: 16px;
+    </div>
 
-        box-shadow:
-            0 2px 8px rgba(0,0,0,0.04);
-    }
 
-    .stat-icon {
-        width: 55px;
-        height: 55px;
+    <div class="stat-card">
 
-        display: flex;
+        <div class="stat-icon purple">
+            ↑
+        </div>
 
-        align-items: center;
-        justify-content: center;
+        <div class="stat-content">
 
-        border-radius: 12px;
+            <span>Total Imports</span>
 
-        font-size: 25px;
-        font-weight: bold;
-    }
+            <strong>0</strong>
 
-    .stat-icon.work {
-        background: #e8f1ff;
-        color: #2563eb;
-    }
+            <small>
+                Excel uploads
+            </small>
 
-    .stat-icon.station {
-        background: #e8f8ef;
-        color: #15803d;
-    }
+        </div>
 
-    .stat-icon.line {
-        background: #fff4df;
-        color: #d97706;
-    }
+    </div>
 
-    .stat-icon.import {
-        background: #f2eaff;
-        color: #7c3aed;
-    }
 
-    .stat-card span {
-        display: block;
+</div>
 
-        color: #6b7280;
 
-        font-size: 14px;
-    }
 
-    .stat-card strong {
-        display: block;
+<!-- =========================
+     WORK ORDERS
+     ========================= -->
 
-        font-size: 28px;
+<div id="work-orders"
+     class="dashboard-card table-card">
 
-        margin-top: 3px;
-    }
+    <div class="section-header">
 
-    .stat-card small {
-        color: #9ca3af;
-    }
+        <div class="section-title">
 
+            <div class="section-icon blue">
+                ▣
+            </div>
 
-    /* CONTENT */
+            <div>
 
-    .content-grid {
-        display: grid;
+                <h2>Work Details</h2>
 
-        grid-template-columns:
-            1.5fr 1fr;
+                <p>
+                    WORK_ORDER
+                </p>
 
-        gap: 25px;
-    }
+            </div>
 
-    .dashboard-card {
-        background: white;
+        </div>
 
-        border: 1px solid #e5e7eb;
 
-        border-radius: 12px;
+        <button class="primary-button">
+            View All
+        </button>
 
-        padding: 25px;
+    </div>
 
-        box-shadow:
-            0 2px 8px rgba(0,0,0,0.04);
-    }
 
+    <div class="table-container">
 
-    /* CARD HEADER */
+        <table>
 
-    .card-header {
-        display: flex;
+            <thead>
 
-        justify-content: space-between;
+                <tr>
 
-        align-items: center;
+                    <th>#</th>
 
-        margin-bottom: 22px;
-    }
+                    <th>Work Code</th>
 
-    .card-header h2 {
-        margin: 0;
+                    <th>Name of Work</th>
 
-        font-size: 20px;
+                    <th>Sub Workcode</th>
 
-        color: #123b63;
-    }
+                    <th>Name of Subwork</th>
 
-    .card-header p {
-        margin: 5px 0 0;
+                    <th>User Name</th>
 
-        color: #6b7280;
+                    <th>Status</th>
 
-        font-size: 14px;
-    }
+                </tr>
 
-    .card-symbol {
-        width: 45px;
-        height: 45px;
+            </thead>
 
-        display: flex;
 
-        align-items: center;
-        justify-content: center;
+            <tbody id="workOrderTableBody">
 
-        background: #eef4ff;
+                <tr>
+                    <td colspan="7" class="empty-row">
+                        Loading work orders...
+                    </td>
+                </tr>
 
-        color: #2563eb;
+            </tbody>
 
-        border-radius: 10px;
+        </table>
 
-        font-size: 22px;
+    </div>
 
-        font-weight: bold;
-    }
+</div>
 
 
-    /* UPLOAD */
 
-    .upload-area {
-        border: 2px dashed #cbd5e1;
+<!-- =========================
+     STATIONS
+     ========================= -->
 
-        border-radius: 12px;
+<div id="stations"
+     class="dashboard-card table-card">
 
-        padding: 45px 20px;
+    <div class="section-header">
 
-        text-align: center;
+        <div class="section-title">
 
-        background: #f8fafc;
-    }
+            <div class="section-icon green">
+                ▦
+            </div>
 
-    .upload-symbol {
-        width: 65px;
-        height: 65px;
+            <div>
 
-        margin: auto;
+                <h2>Station Details</h2>
 
-        display: flex;
+                <p>
+                    STATION_DETAILS
+                </p>
 
-        align-items: center;
-        justify-content: center;
+            </div>
 
-        background: #eaf1ff;
+        </div>
 
-        color: #2563eb;
 
-        border-radius: 50%;
+        <button class="primary-button">
+            View All
+        </button>
 
-        font-size: 30px;
+    </div>
 
-        font-weight: bold;
-    }
 
-    .upload-area h3 {
-        margin-top: 18px;
+    <div class="table-container">
 
-        font-size: 19px;
-    }
+        <table>
 
-    .upload-area p {
-        color: #6b7280;
+            <thead>
 
-        font-size: 14px;
-    }
+                <tr>
 
-    .select-button {
-        margin-top: 10px;
+                    <th>#</th>
+                    <th>Station Code</th>
+                    <th>Substation Name</th>
+                    <th>Zone</th>
+                    <th>Circle</th>
+                    <th>Division</th>
+                    <th>Voltage Class</th>
+                    <th>Type</th>
+                    <th>Work Code</th>
 
-        padding: 11px 20px;
+                </tr>
 
-        border: 1px solid #2563eb;
+            </thead>
 
-        background: white;
 
-        color: #2563eb;
+            <tbody id="stationTableBody">
 
-        border-radius: 7px;
+                <tr>
+                    <td colspan="9" class="empty-row">
+                        Loading station details...
+                    </td>
+                </tr>
 
-        cursor: pointer;
+            </tbody>
 
-        font-size: 14px;
-    }
+        </table>
 
-    .select-button:hover {
-        background: #2563eb;
+    </div>
 
-        color: white;
-    }
+</div>
 
-    .file-name {
-        margin-top: 15px;
 
-        color: #374151;
 
-        font-size: 14px;
-    }
+<!-- =========================
+     LINES
+     ========================= -->
 
+<div id="lines"
+     class="dashboard-card table-card">
 
-    /* DATABASE TABLES */
+    <div class="section-header">
 
-    .table-list {
-        display: flex;
+        <div class="section-title">
 
-        flex-direction: column;
+            <div class="section-icon orange">
+                ◇
+            </div>
 
-        gap: 12px;
-    }
+            <div>
 
-    .table-item {
-        display: flex;
+                <h2>Line Code Details</h2>
 
-        align-items: center;
+                <p>
+                    LINE_CODE_DETAILS
+                </p>
 
-        gap: 12px;
+            </div>
 
-        padding: 14px;
+        </div>
 
-        border: 1px solid #e5e7eb;
 
-        border-radius: 9px;
-    }
+        <button class="primary-button">
+            View All
+        </button>
 
-    .table-symbol {
-        width: 40px;
-        height: 40px;
+    </div>
 
-        display: flex;
 
-        align-items: center;
-        justify-content: center;
+    <div class="table-container">
 
-        background: #f1f5f9;
+        <table>
 
-        border-radius: 8px;
+            <thead>
 
-        font-size: 19px;
-    }
+                <tr>
 
-    .table-item div:nth-child(2) {
-        flex: 1;
-    }
+                    <th>#</th>
+                    <th>Line Code</th>
+                    <th>Line Name</th>
+                    <th>Zone</th>
+                    <th>Circle</th>
+                    <th>Division</th>
+                    <th>Voltage Class</th>
+                    <th>Line Type</th>
+                    <th>Zone Code</th>
+                    <th>Work Code</th>
 
-    .table-item strong {
-        display: block;
+                </tr>
 
-        color: #374151;
-    }
+            </thead>
 
-    .table-item small {
-        color: #9ca3af;
-    }
 
-    .table-item > span {
-        font-weight: 700;
-    }
+            <tbody id="lineTableBody">
 
+                <tr>
+                    <td colspan="10" class="empty-row">
+                        Loading line details...
+                    </td>
+                </tr>
 
-    /* RESPONSIVE */
+            </tbody>
 
-    @@media (max-width: 1000px) {
+        </table>
 
-        .stats-grid {
-            grid-template-columns:
-                repeat(2, 1fr);
-        }
+    </div>
 
-        .content-grid {
-            grid-template-columns: 1fr;
-        }
+</div>
 
-    }
 
 
-    @@media (max-width: 600px) {
+<!-- =========================
+     UPLOAD
+     ========================= -->
 
-        .dashboard {
-            padding: 20px 15px;
-        }
+<div id="upload"
+     class="dashboard-card upload-card">
 
-        .dashboard-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 15px;
-        }
+    <div class="section-header">
 
-        .stats-grid {
-            grid-template-columns: 1fr;
-        }
+        <div class="section-title">
 
-    }
+            <div class="section-icon purple">
+                ↑
+            </div>
 
-</style>
+            <div>
+
+                <h2>Upload Excel</h2>
+
+                <p>
+                    Import project survey data
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="upload-area">
+
+        <div class="upload-large-icon">
+            ↑
+        </div>
+
+        <h3>
+            Upload Excel File
+        </h3>
+
+        <p>
+            Drag and drop your Excel file here
+            or select a file from your computer
+        </p>
+
+        <input type="file"
+               id="excelFile"
+               accept=".xlsx,.xls"
+               hidden />
+
+        <button class="primary-button upload-button"
+                type="button"
+                onclick="document.getElementById('excelFile').click()">
+
+            Browse File
+
+        </button>
+
+        <div id="selectedFile"
+             class="selected-file">
+        </div>
+
+    </div>
+
+</div>
+
 
 
 @section Scripts {
 
     <script>
 
-        document
-            .getElementById("excelFile")
-            .addEventListener("change", function () {
+        document.addEventListener("DOMContentLoaded", function () {
 
-                const fileName =
-                    document.getElementById("fileName");
+            loadWorkOrders();
+            loadStations();
+            loadLines();
 
-                if (this.files.length > 0) {
+        });
 
-                    fileName.textContent =
-                        "Selected file: "
-                        + this.files[0].name;
 
+        // =====================================================
+        // GET VALUE
+        // Handles different JSON property name formats
+        // =====================================================
+
+        function getValue(item, propertyName) {
+
+            if (!item) {
+                return "";
+            }
+
+            // Exact property
+            if (item[propertyName] !== undefined &&
+                item[propertyName] !== null) {
+
+                return item[propertyName];
+            }
+
+            // Case-insensitive search
+            const key = Object.keys(item).find(
+                x => x.toLowerCase() === propertyName.toLowerCase()
+            );
+
+            if (key) {
+                return item[key] ?? "";
+            }
+
+            return "";
+        }
+
+
+        // =====================================================
+        // GET DATA FROM API RESPONSE
+        // Supports:
+        // { data: [...] }
+        // OR
+        // [...]
+        // =====================================================
+
+        function getApiData(result) {
+
+            if (Array.isArray(result)) {
+                return result;
+            }
+
+            if (result &&
+                Array.isArray(result.data)) {
+
+                return result.data;
+            }
+
+            if (result &&
+                Array.isArray(result.Data)) {
+
+                return result.Data;
+            }
+
+            return [];
+        }
+
+
+        // =====================================================
+        // WORK ORDERS
+        // =====================================================
+
+        async function loadWorkOrders() {
+
+            const tbody =
+                document.getElementById("workOrderTableBody");
+
+            const countElement =
+                document.getElementById("workOrderCount");
+
+
+            try {
+
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="empty-row">
+                            Loading work orders...
+                        </td>
+                    </tr>
+                `;
+
+
+                const response =
+                    await fetch("/api/WorkOrder", {
+                        method: "GET",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    });
+
+
+                if (!response.ok) {
+
+                    const errorText =
+                        await response.text();
+
+                    console.error(
+                        "Work Order API Error:",
+                        response.status,
+                        errorText
+                    );
+
+                    throw new Error(
+                        "API returned " +
+                        response.status
+                    );
                 }
-                else {
 
-                    fileName.textContent = "";
 
+                const result =
+                    await response.json();
+
+                console.log(
+                    "WORK ORDER API RESPONSE:",
+                    result
+                );
+
+
+                const data =
+                    getApiData(result);
+
+
+                countElement.innerText =
+                    data.length;
+
+
+                tbody.innerHTML = "";
+
+
+                if (data.length === 0) {
+
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="empty-row">
+                                No work order records found
+                            </td>
+                        </tr>
+                    `;
+
+                    return;
                 }
 
-            });
+
+                data.forEach(function (item, index) {
+
+                    const workCode =
+                        getValue(item, "WORK_CODE");
+
+                    const nameOfWork =
+                        getValue(item, "NAME_OF_WORK");
+
+                    const subWorkCode =
+                        getValue(item, "SUB_WORKCODE");
+
+                    const nameOfSubWork =
+                        getValue(item, "NAME_OF_SUBWORK");
+
+                    const userName =
+                        getValue(item, "USER_NAME");
+
+                    const status =
+                        getValue(item, "STATUS");
+
+
+                    tbody.innerHTML += `
+
+                        <tr>
+
+                            <td>
+                                ${index + 1}
+                            </td>
+
+                            <td>
+                                ${workCode}
+                            </td>
+
+                            <td>
+                                ${nameOfWork}
+                            </td>
+
+                            <td>
+                                ${subWorkCode}
+                            </td>
+
+                            <td>
+                                ${nameOfSubWork}
+                            </td>
+
+                            <td>
+                                ${userName}
+                            </td>
+
+                            <td>
+                                ${status}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                });
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Work Order Error:",
+                    error
+                );
+
+
+                countElement.innerText = "0";
+
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="7"
+                            class="empty-row">
+
+                            Unable to load work orders
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+        }
+
+
+        // =====================================================
+        // STATION DETAILS
+        // =====================================================
+
+        async function loadStations() {
+
+            const tbody =
+                document.getElementById("stationTableBody");
+
+            const countElement =
+                document.getElementById("stationCount");
+
+
+            try {
+
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="empty-row">
+                            Loading station details...
+                        </td>
+                    </tr>
+                `;
+
+
+                const response =
+                    await fetch("/api/StationDetails", {
+                        method: "GET",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    });
+
+
+                if (!response.ok) {
+
+                    const errorText =
+                        await response.text();
+
+                    console.error(
+                        "Station API Error:",
+                        response.status,
+                        errorText
+                    );
+
+                    throw new Error(
+                        "API returned " +
+                        response.status
+                    );
+                }
+
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+                    "STATION API RESPONSE:",
+                    result
+                );
+
+
+                const data =
+                    getApiData(result);
+
+
+                countElement.innerText =
+                    data.length;
+
+
+                tbody.innerHTML = "";
+
+
+                if (data.length === 0) {
+
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="9" class="empty-row">
+                                No station records found
+                            </td>
+                        </tr>
+                    `;
+
+                    return;
+                }
+
+
+                data.forEach(function (item, index) {
+
+                    const stationCode =
+                        getValue(item, "STATION_CODE");
+
+                    const substationName =
+                        getValue(item, "SUBSTATION_NAME");
+
+                    const zone =
+                        getValue(item, "ZONE");
+
+                    const circle =
+                        getValue(item, "CIRCLE");
+
+                    const division =
+                        getValue(item, "DIVISION");
+
+                    const voltageClass =
+                        getValue(item, "VOLTAGE_CLASS");
+
+                    const type =
+                        getValue(item, "TYPE_OF_SUBSTATION");
+
+                    const workCode =
+                        getValue(item, "WORK_CODE");
+
+
+                    tbody.innerHTML += `
+
+                        <tr>
+
+                            <td>
+                                ${index + 1}
+                            </td>
+
+                            <td>
+                                ${stationCode}
+                            </td>
+
+                            <td>
+                                ${substationName}
+                            </td>
+
+                            <td>
+                                ${zone}
+                            </td>
+
+                            <td>
+                                ${circle}
+                            </td>
+
+                            <td>
+                                ${division}
+                            </td>
+
+                            <td>
+                                ${voltageClass}
+                            </td>
+
+                            <td>
+                                ${type}
+                            </td>
+
+                            <td>
+                                ${workCode}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                });
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Station Error:",
+                    error
+                );
+
+
+                countElement.innerText = "0";
+
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="9"
+                            class="empty-row">
+
+                            Unable to load station details
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+        }
+
+
+        // =====================================================
+        // LINE CODE DETAILS
+        // =====================================================
+
+        async function loadLines() {
+
+            const tbody =
+                document.getElementById("lineTableBody");
+
+            const countElement =
+                document.getElementById("lineCount");
+
+
+            try {
+
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="empty-row">
+                            Loading line details...
+                        </td>
+                    </tr>
+                `;
+
+
+                const response =
+                    await fetch("/api/LineCodeDetails", {
+                        method: "GET",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    });
+
+
+                if (!response.ok) {
+
+                    const errorText =
+                        await response.text();
+
+                    console.error(
+                        "Line API Error:",
+                        response.status,
+                        errorText
+                    );
+
+                    throw new Error(
+                        "API returned " +
+                        response.status
+                    );
+                }
+
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+                    "LINE API RESPONSE:",
+                    result
+                );
+
+
+                const data =
+                    getApiData(result);
+
+
+                countElement.innerText =
+                    data.length;
+
+
+                tbody.innerHTML = "";
+
+
+                if (data.length === 0) {
+
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="10" class="empty-row">
+                                No line records found
+                            </td>
+                        </tr>
+                    `;
+
+                    return;
+                }
+
+
+                data.forEach(function (item, index) {
+
+                    const lineCode =
+                        getValue(item, "LINE_CODE");
+
+                    const lineName =
+                        getValue(item, "LINE_NAME");
+
+                    const zone =
+                        getValue(item, "ZONE");
+
+                    const circle =
+                        getValue(item, "CIRCLE");
+
+                    const division =
+                        getValue(item, "DIVISION");
+
+                    const voltageClass =
+                        getValue(item, "VOLTAGECLASS");
+
+                    const lineType =
+                        getValue(item, "LINE_TYPE");
+
+                    const zoneCode =
+                        getValue(item, "ZONE_CODE");
+
+                    const workCode =
+                        getValue(item, "WORK_CODE");
+
+
+                    tbody.innerHTML += `
+
+                        <tr>
+
+                            <td>
+                                ${index + 1}
+                            </td>
+
+                            <td>
+                                ${lineCode}
+                            </td>
+
+                            <td>
+                                ${lineName}
+                            </td>
+
+                            <td>
+                                ${zone}
+                            </td>
+
+                            <td>
+                                ${circle}
+                            </td>
+
+                            <td>
+                                ${division}
+                            </td>
+
+                            <td>
+                                ${voltageClass}
+                            </td>
+
+                            <td>
+                                ${lineType}
+                            </td>
+
+                            <td>
+                                ${zoneCode}
+                            </td>
+
+                            <td>
+                                ${workCode}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                });
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Line Error:",
+                    error
+                );
+
+
+                countElement.innerText = "0";
+
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="10"
+                            class="empty-row">
+
+                            Unable to load line details
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+        }
 
     </script>
 
