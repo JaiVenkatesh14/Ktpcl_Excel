@@ -1,3 +1,4 @@
+using KPTCL_API_STAGG.Services;
 using Kptcl_Excel_Load.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<OracleDbService>();
+builder.Services.AddScoped<ExcelImportService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
