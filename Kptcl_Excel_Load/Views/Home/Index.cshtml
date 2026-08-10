@@ -31,122 +31,7 @@
 
 
 
-<!-- =========================
-     DATA FLOW
-     ========================= -->
 
-<div class="dashboard-card">
-
-    <div class="card-title">
-
-        <h2>Data Flow Overview</h2>
-
-        <span class="card-subtitle">
-            Excel survey data processing
-        </span>
-
-    </div>
-
-
-    <div class="data-flow">
-
-        <div class="flow-item">
-
-            <div class="flow-icon excel">
-                XLS
-            </div>
-
-            <strong>Excel File</strong>
-
-            <small>
-                Combined_work_details
-            </small>
-
-        </div>
-
-
-        <div class="flow-arrow">
-            →
-        </div>
-
-
-        <div class="flow-item">
-
-            <div class="flow-icon api">
-                API
-            </div>
-
-            <strong>Application / API</strong>
-
-            <small>
-                Validate & Map
-            </small>
-
-        </div>
-
-
-        <div class="flow-arrow">
-            →
-        </div>
-
-
-        <div class="flow-item">
-
-            <div class="flow-icon station">
-                ST
-            </div>
-
-            <strong>Station Details</strong>
-
-            <small>
-                STATION_DETAILS
-            </small>
-
-        </div>
-
-
-        <div class="flow-arrow">
-            →
-        </div>
-
-
-        <div class="flow-item">
-
-            <div class="flow-icon line">
-                LN
-            </div>
-
-            <strong>Line Code</strong>
-
-            <small>
-                LINE_CODE_DETAILS
-            </small>
-
-        </div>
-
-
-        <div class="flow-arrow">
-            →
-        </div>
-
-
-        <div class="flow-item">
-
-            <div class="flow-icon database">
-                DB
-            </div>
-
-            <strong>Oracle Database</strong>
-
-            <small>
-                WORK_ORDER
-            </small>
-
-        </div>
-
-    </div>
-
-</div>
 
 
 
@@ -246,11 +131,11 @@
 
 
 <!-- =========================
-     WORK ORDERS
+     WORK DETAILS
      ========================= -->
 
 <div id="work-orders"
-     class="dashboard-card table-card">
+     class="dashboard-card work-details-card">
 
     <div class="section-header">
 
@@ -261,58 +146,59 @@
             </div>
 
             <div>
-
                 <h2>Work Details</h2>
-
-                <p>
-                    WORK_ORDER
-                </p>
-
+                <p>WORK_ORDER</p>
             </div>
 
         </div>
 
+        <button class="primary-button"
+                type="button">
 
-        <button class="primary-button">
             View All
+
         </button>
 
     </div>
 
 
-    <div class="table-container">
+    <div class="work-table-wrapper">
 
-        <table>
+        <table class="work-table">
 
             <thead>
-
                 <tr>
+                    <th class="col-number">#</th>
 
-                    <th>#</th>
+                    <th class="col-work-code">
+                        Work Code
+                    </th>
 
-                    <th>Work Code</th>
+                    <th class="col-work-name">
+                        Work Details
+                    </th>
 
-                    <th>Name of Work</th>
+                    <th class="col-user">
+                        User
+                    </th>
 
-                    <th>Sub Workcode</th>
-
-                    <th>Name of Subwork</th>
-
-                    <th>User Name</th>
-
-                    <th>Status</th>
-
+                    <th class="col-status">
+                        Status
+                    </th>
                 </tr>
-
             </thead>
-
 
             <tbody id="workOrderTableBody">
 
                 <tr>
-                    <td colspan="7" class="empty-row">
+
+                    <td colspan="7"
+                        class="empty-row">
+
                         Loading work orders...
+
                     </td>
+
                 </tr>
 
             </tbody>
@@ -322,6 +208,8 @@
     </div>
 
 </div>
+
+
 
 
 
@@ -726,41 +614,72 @@
                         getValue(item, "STATUS");
 
 
-                    tbody.innerHTML += `
+                                                   tbody.innerHTML += `
 
-                        <tr>
+            <tr class="work-parent-row">
 
-                            <td>
-                                ${index + 1}
-                            </td>
+                <td>
+                    ${index + 1}
+                </td>
 
-                            <td>
-                                ${workCode}
-                            </td>
+                <td>
+                    <span class="record-code">
+                        ${workCode}
+                    </span>
+                </td>
 
-                            <td>
-                                ${nameOfWork}
-                            </td>
+                <td>
 
-                            <td>
-                                ${subWorkCode}
-                            </td>
+                    <div class="work-parent">
 
-                            <td>
-                                ${nameOfSubWork}
-                            </td>
+                        <div class="work-parent-title">
+                            ${nameOfWork}
+                        </div>
 
-                            <td>
-                                ${userName}
-                            </td>
+                        <div class="sub-work">
 
-                            <td>
-                                ${status}
-                            </td>
+                            <div class="sub-work-line">
+                                <span class="sub-work-branch">└─</span>
 
-                        </tr>
+                                <div class="sub-work-content">
 
-                    `;
+                                    <span class="sub-work-label">
+                                        Sub Work
+                                    </span>
+
+                                    <span class="sub-work-code">
+                                        ${subWorkCode}
+                                    </span>
+
+                                    <div class="sub-work-name">
+                                        ${nameOfSubWork}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+                <td>
+                    ${userName}
+                </td>
+
+                <td>
+
+                    <span class="status-badge">
+                        ${status == 1 ? "Active" : "Inactive"}
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
 
                 });
 
@@ -917,9 +836,11 @@
                                 ${index + 1}
                             </td>
 
-                            <td>
-                                ${stationCode}
-                            </td>
+                                   <td>
+            <span class="record-code">
+                ${stationCode}
+            </span>
+        </td>
 
                             <td>
                                 ${substationName}
@@ -1111,9 +1032,11 @@
                                 ${index + 1}
                             </td>
 
-                            <td>
-                                ${lineCode}
-                            </td>
+                                   <td>
+            <span class="record-code">
+                ${lineCode}
+            </span>
+        </td>
 
                             <td>
                                 ${lineName}

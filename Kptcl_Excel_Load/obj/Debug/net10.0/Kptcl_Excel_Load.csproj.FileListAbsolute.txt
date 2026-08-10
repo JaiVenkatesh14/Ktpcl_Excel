@@ -228,4 +228,4 @@ E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\refint\Kptcl_Excel
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\Kptcl_Excel_Load.pdb
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\Kptcl_Excel_Load.genruntimeconfig.cache
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\ref\Kptcl_Excel_Load.dll
-E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\compressed\rkqv6tvtji-{0}-bkpicmd6w6-bkpicmd6w6.gz
+E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\compressed\rkqv6tvtji-{0}-oj0do5lt3h-oj0do5lt3h.gz

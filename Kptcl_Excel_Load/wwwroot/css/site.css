@@ -748,3 +748,337 @@ tbody tr:hover {
         gap: 12px;
     }
 }
+/* =========================================
+   WORK DETAILS TABLE - WRAPPED TEXT
+   ========================================= */
+
+.work-details-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+    .work-details-card .section-header {
+        padding: 18px 20px;
+        margin-bottom: 0;
+        border-bottom: 1px solid #e5eaf0;
+    }
+
+.work-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.work-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+
+
+
+    /* Header */
+
+    .work-table thead th {
+        background: #f6f8fb;
+        color: #66758a;
+        font-size: 11px;
+        font-weight: 700;
+        text-align: left;
+        padding: 13px 12px;
+        border-bottom: 1px solid #e3e8ee;
+        white-space: nowrap;
+    }
+
+
+    /* Table body */
+
+    .work-table tbody td {
+        color: #42526a;
+        font-size: 11px;
+        padding: 14px 12px;
+        border-bottom: 1px solid #edf0f4;
+        vertical-align: top;
+        line-height: 1.5;
+    }
+
+
+    /* Hover */
+
+    .work-table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+
+/* Work Code */
+
+.record-code {
+    color: #1769aa;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+
+/* IMPORTANT:
+   Allow long text to wrap
+*/
+
+.work-table .long-text {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+
+/* Status */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: #eaf8f1;
+    color: #188456;
+    font-size: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+    .status-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #20a66a;
+    }
+
+
+/* Empty state */
+
+.work-table .empty-row {
+    text-align: center;
+    padding: 35px 15px !important;
+    color: #98a4b3;
+}
+
+
+/* Mobile */
+
+@media (max-width: 900px) {
+
+    .work-table {
+        min-width: 850px;
+    }
+}
+
+/* =========================================
+   WORK DETAILS - PARENT / CHILD
+   ========================================= */
+
+.work-details-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.work-table-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.work-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+
+    /* Columns */
+
+    .work-table .col-number {
+        width: 45px;
+    }
+
+    .work-table .col-work-code {
+        width: 120px;
+    }
+
+    .work-table .col-work-name {
+        width: auto;
+    }
+
+    .work-table .col-user {
+        width: 140px;
+    }
+
+    .work-table .col-status {
+        width: 100px;
+    }
+
+
+    /* Header */
+
+    .work-table thead th {
+        background: #f6f8fb;
+        color: #647184;
+        font-size: 11px;
+        font-weight: 700;
+        text-align: left;
+        padding: 13px 16px;
+        border-bottom: 1px solid #e3e8ee;
+        white-space: nowrap;
+    }
+
+
+    /* Body */
+
+    .work-table tbody td {
+        color: #42526a;
+        font-size: 11px;
+        padding: 16px;
+        border-bottom: 1px solid #edf0f4;
+        vertical-align: top;
+    }
+
+
+/* =========================================
+   PARENT WORK
+   ========================================= */
+
+.work-parent-title {
+    color: #26384f;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.55;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+
+/* =========================================
+   SUB WORK
+   ========================================= */
+
+.sub-work {
+    margin-top: 12px;
+    margin-left: 6px;
+    padding-left: 16px;
+    border-left: 2px solid #d9e6f3;
+}
+
+
+.sub-work-line {
+    display: flex;
+    align-items: flex-start;
+}
+
+
+.sub-work-branch {
+    flex: 0 0 auto;
+    color: #7d9bb8;
+    font-size: 15px;
+    font-weight: 600;
+    margin-right: 8px;
+    line-height: 1.2;
+}
+
+
+.sub-work-content {
+    min-width: 0;
+    width: 100%;
+}
+
+
+.sub-work-label {
+    display: inline-block;
+    padding: 3px 7px;
+    margin-right: 7px;
+    border-radius: 4px;
+    background: #f0f5fa;
+    color: #6d7e91;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+
+.sub-work-code {
+    color: #1769aa;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+.sub-work-name {
+    margin-top: 5px;
+    color: #66768a;
+    font-size: 10px;
+    line-height: 1.5;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+
+/* =========================================
+   RECORD CODE
+   ========================================= */
+
+.record-code {
+    color: #1769aa;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   STATUS
+   ========================================= */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: #eaf8f1;
+    color: #188456;
+    font-size: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+    .status-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #20a66a;
+    }
+
+
+/* =========================================
+   HOVER
+   ========================================= */
+
+.work-table tbody tr:hover {
+    background: #f9fbfd;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    .work-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .work-table {
+        min-width: 800px;
+    }
+}
