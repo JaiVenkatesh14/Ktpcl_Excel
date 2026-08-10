@@ -168,6 +168,7 @@
 
             <thead>
                 <tr>
+
                     <th class="col-number">#</th>
 
                     <th class="col-work-code">
@@ -182,23 +183,15 @@
                         User
                     </th>
 
-                    <th class="col-status">
-                        Status
-                    </th>
                 </tr>
             </thead>
 
             <tbody id="workOrderTableBody">
 
                 <tr>
-
-                    <td colspan="7"
-                        class="empty-row">
-
+                    <td colspan="4" class="empty-row">
                         Loading work orders...
-
                     </td>
-
                 </tr>
 
             </tbody>
@@ -532,6 +525,10 @@
         // =====================================================
         // WORK ORDERS
         // =====================================================
+        // =====================================================
+        // WORK ORDERS
+        // PARENT WORK + CHILD SUB WORKS
+        // =====================================================
 
         async function loadWorkOrders() {
 
@@ -546,12 +543,16 @@
 
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7" class="empty-row">
+                        <td colspan="4" class="empty-row">
                             Loading work orders...
                         </td>
                     </tr>
                 `;
 
+
+                // =================================================
+                // API
+                // =================================================
 
                 const response =
                     await fetch("/api/WorkOrder", {
@@ -574,14 +575,14 @@
                     );
 
                     throw new Error(
-                        "API returned " +
-                        response.status
+                        "API returned " + response.status
                     );
                 }
 
 
                 const result =
                     await response.json();
+
 
                 console.log(
                     "WORK ORDER API RESPONSE:",
@@ -593,18 +594,108 @@
                     getApiData(result);
 
 
+                // =================================================
+                // GROUP BY WORK CODE
+                // =================================================
+
+                const groupedWorks = new Map();
+
+
+                data.forEach(function (item) {
+
+                    const workCode =
+                        getValue(item, "WORK_CODE").trim();
+
+
+                    const nameOfWork =
+                        getValue(item, "NAME_OF_WORK");
+
+
+                    const subWorkCode =
+                        getValue(item, "SUB_WORKCODE");
+
+
+                    const nameOfSubWork =
+                        getValue(item, "NAME_OF_SUBWORK");
+
+
+                    const userName =
+                        getValue(item, "USER_NAME");
+
+
+                    if (!workCode) {
+                        return;
+                    }
+
+
+                    // ---------------------------------------------
+                    // Create parent work
+                    // ---------------------------------------------
+
+                    if (!groupedWorks.has(workCode)) {
+
+                        groupedWorks.set(
+                            workCode,
+                            {
+                                workCode: workCode,
+
+                                nameOfWork: nameOfWork,
+
+                                subWorks: []
+                            }
+                        );
+
+                    }
+
+
+                    const parent =
+                        groupedWorks.get(workCode);
+
+
+                    // ---------------------------------------------
+                    // Add child sub work
+                    // ---------------------------------------------
+
+                    parent.subWorks.push({
+
+                        subWorkCode:
+                            subWorkCode,
+
+                        nameOfSubWork:
+                            nameOfSubWork,
+
+                        userName:
+                            userName
+
+                    });
+
+                });
+
+
+                // =================================================
+                // UNIQUE WORK ORDERS
+                // =================================================
+
+                const works =
+                    Array.from(groupedWorks.values());
+
+
                 countElement.innerText =
-                    data.length;
+                    works.length;
 
 
                 tbody.innerHTML = "";
 
 
-                if (data.length === 0) {
+                // =================================================
+                // NO DATA
+                // =================================================
+
+                if (works.length === 0) {
 
                     tbody.innerHTML = `
                         <tr>
-                            <td colspan="7" class="empty-row">
+                            <td colspan="4" class="empty-row">
                                 No work order records found
                             </td>
                         </tr>
@@ -614,95 +705,173 @@
                 }
 
 
-                data.forEach(function (item, index) {
+                // =================================================
+                // RENDER PARENT WORKS
+                // =================================================
 
-                    const workCode =
-                        getValue(item, "WORK_CODE");
-
-                    const nameOfWork =
-                        getValue(item, "NAME_OF_WORK");
-
-                    const subWorkCode =
-                        getValue(item, "SUB_WORKCODE");
-
-                    const nameOfSubWork =
-                        getValue(item, "NAME_OF_SUBWORK");
-
-                    const userName =
-                        getValue(item, "USER_NAME");
-
-                    const status =
-                        getValue(item, "STATUS");
+                works.forEach(function (work, index) {
 
 
-                                                   tbody.innerHTML += `
+                    // ---------------------------------------------
+                    // SUB WORK HTML
+                    // ---------------------------------------------
 
-            <tr class="work-parent-row">
+                    let subWorkHtml = "";
 
-                <td>
-                    ${index + 1}
-                </td>
 
-                <td>
-                    <span class="record-code">
-                        ${workCode}
-                    </span>
-                </td>
+                    work.subWorks.forEach(function (sub) {
 
-                <td>
+                        subWorkHtml += `
 
-                    <div class="work-parent">
+                            <div class="sub-work-item">
 
-                        <div class="work-parent-title">
-                            ${nameOfWork}
-                        </div>
-
-                        <div class="sub-work">
-
-                            <div class="sub-work-line">
-                                <span class="sub-work-branch">└─</span>
+                                <div class="sub-work-branch">
+                                    └─
+                                </div>
 
                                 <div class="sub-work-content">
 
-                                    <span class="sub-work-label">
-                                        Sub Work
-                                    </span>
+                                    <div class="sub-work-heading">
 
-                                    <span class="sub-work-code">
-                                        ${subWorkCode}
-                                    </span>
+                                        <span class="sub-work-label">
+                                            SUB WORK
+                                        </span>
+
+                                        <span class="sub-work-code">
+                                            ${escapeHtml(
+                                                sub.subWorkCode || ""
+                                            )}
+                                        </span>
+
+                                    </div>
 
                                     <div class="sub-work-name">
-                                        ${nameOfSubWork}
+
+                                        ${escapeHtml(
+                                            sub.nameOfSubWork || ""
+                                        )}
+
                                     </div>
 
                                 </div>
 
                             </div>
 
-                        </div>
+                        `;
 
-                    </div>
+                    });
 
-                </td>
 
-                <td>
-                    ${userName}
-                </td>
+                    // ---------------------------------------------
+                    // USERS
+                    // Each child user is displayed separately
+                    // ---------------------------------------------
 
-                <td>
+                    let usersHtml = "";
 
-                    <span class="status-badge">
-                        ${status == 1 ? "Active" : "Inactive"}
-                    </span>
 
-                </td>
+                    work.subWorks.forEach(function (sub) {
 
-            </tr>
+                        if (!sub.userName) {
+                            return;
+                        }
 
-        `;
+
+                        usersHtml += `
+
+                            <div class="work-user-item">
+
+                                ${escapeHtml(
+                                    sub.userName
+                                )}
+
+                            </div>
+
+                        `;
+
+                    });
+
+
+                    // ---------------------------------------------
+                    // PARENT ROW
+                    // ---------------------------------------------
+
+                    tbody.innerHTML += `
+
+                        <tr class="work-parent-row">
+
+                            <!-- NUMBER -->
+
+                            <td class="work-number-cell">
+
+                                ${index + 1}
+
+                            </td>
+
+
+                            <!-- WORK CODE -->
+
+                            <td class="work-code-cell">
+
+                                <span class="record-code">
+
+                                    ${escapeHtml(
+                                        work.workCode
+                                    )}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- WORK DETAILS -->
+
+                            <td class="work-details-cell">
+
+                                <div class="work-parent">
+
+                                    <!-- PARENT WORK -->
+
+                                    <div class="work-parent-title">
+
+                                        ${escapeHtml(
+                                            work.nameOfWork || ""
+                                        )}
+
+                                    </div>
+
+
+                                    <!-- CHILDREN -->
+
+                                    <div class="sub-work-list">
+
+                                        ${subWorkHtml}
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- USERS -->
+
+                            <td class="work-user-cell">
+
+                                <div class="work-users">
+
+                                    ${usersHtml}
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    `;
 
                 });
+
 
             }
             catch (error) {
@@ -713,14 +882,15 @@
                 );
 
 
-                countElement.innerText = "0";
+                countElement.innerText =
+                    "0";
 
 
                 tbody.innerHTML = `
 
                     <tr>
 
-                        <td colspan="7"
+                        <td colspan="4"
                             class="empty-row">
 
                             Unable to load work orders
