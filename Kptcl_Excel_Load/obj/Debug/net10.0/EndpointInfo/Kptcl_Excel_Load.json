@@ -5,10 +5,46 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/LineCodeDetails": {
+      "get": {
+        "tags": [
+          "LineCodeDetails"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Oracle/test-connection": {
       "get": {
         "tags": [
           "Oracle"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/StationDetails": {
+      "get": {
+        "tags": [
+          "StationDetails"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorkOrder": {
+      "get": {
+        "tags": [
+          "WorkOrder"
         ],
         "responses": {
           "200": {
@@ -21,7 +57,16 @@
   "components": { },
   "tags": [
     {
+      "name": "LineCodeDetails"
+    },
+    {
       "name": "Oracle"
+    },
+    {
+      "name": "StationDetails"
+    },
+    {
+      "name": "WorkOrder"
     }
   ]
 }

@@ -1,8 +1,38 @@
 [
   {
+    "ContainingType": "Kptcl_Excel_Load.Controllers.LineCodeDetailsController",
+    "Method": "GetLineCodeDetails",
+    "RelativePath": "api/LineCodeDetails",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Kptcl_Excel_Load.Controllers.OracleController",
     "Method": "TestConnection",
     "RelativePath": "api/Oracle/test-connection",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Kptcl_Excel_Load.Controllers.StationDetailsController",
+    "Method": "GetStationDetails",
+    "RelativePath": "api/StationDetails",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Kptcl_Excel_Load.Controllers.WorkOrderController",
+    "Method": "GetWorkOrders",
+    "RelativePath": "api/WorkOrder",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

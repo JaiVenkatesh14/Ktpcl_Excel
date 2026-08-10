@@ -1,12 +1,190 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\Kptcl_Excel\\Ktpcl_Excel\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\controllers\\oraclecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\controllers\\oraclecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\services\\oracledbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\services\\oracledbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\controllers\\linecodedetailscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\controllers\\linecodedetailscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\controllers\\stationdetailscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\controllers\\stationdetailscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\controllers\\workordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\controllers\\workordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\services\\oraclequeries.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\services\\oraclequeries.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\models\\linecodedetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\models\\linecodedetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\models\\stationdetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\models\\stationdetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\models\\workorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\models\\workorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Program.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Program.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Program.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Program.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAUwB8AAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T08:47:19.942Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LineCodeDetailsController.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Controllers\\LineCodeDetailsController.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Controllers\\LineCodeDetailsController.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Controllers\\LineCodeDetailsController.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Controllers\\LineCodeDetailsController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAUwCgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T08:47:08.759Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OracleController.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Controllers\\OracleController.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Controllers\\OracleController.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Controllers\\OracleController.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Controllers\\OracleController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAADgvxgAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T08:31:03.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "OracleDbService.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Services\\OracleDbService.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Services\\OracleDbService.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Services\\OracleDbService.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Services\\OracleDbService.cs",
+              "ViewState": "AgIAALUAAAAAAAAAAAAUwMYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T08:42:39.393Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "StationDetailsController.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Controllers\\StationDetailsController.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Controllers\\StationDetailsController.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Controllers\\StationDetailsController.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Controllers\\StationDetailsController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAUwCgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T08:46:36.409Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "WorkOrderController.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Controllers\\WorkOrderController.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Controllers\\WorkOrderController.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Controllers\\WorkOrderController.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Controllers\\WorkOrderController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAUwCgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T08:44:08.016Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "OracleQueries.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Services\\OracleQueries.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Services\\OracleQueries.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Services\\OracleQueries.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Services\\OracleQueries.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T08:42:25.159Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "LineCodeDetails.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Models\\LineCodeDetails.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Models\\LineCodeDetails.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Models\\LineCodeDetails.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Models\\LineCodeDetails.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T08:40:39.384Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "StationDetails.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Models\\StationDetails.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Models\\StationDetails.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Models\\StationDetails.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Models\\StationDetails.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T08:37:35.057Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "WorkOrder.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Models\\WorkOrder.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Models\\WorkOrder.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Models\\WorkOrder.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Models\\WorkOrder.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T08:37:17.689Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
