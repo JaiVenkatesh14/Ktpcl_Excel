@@ -1628,3 +1628,52 @@ tbody tr:hover {
     background: #dc3545;
     box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
 }
+
+/* =====================================================
+   STATION DETAILS - INNER SCROLL
+   ===================================================== */
+
+.station-table-container {
+    max-height: 430px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+
+    /* Keep table header visible while scrolling */
+
+    .station-table-container table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+
+    /* Sticky header */
+
+    .station-table-container thead th {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: #f6f8fb;
+    }
+
+
+    /* Optional scrollbar styling */
+
+    .station-table-container::-webkit-scrollbar {
+        width: 7px;
+        height: 7px;
+    }
+
+    .station-table-container::-webkit-scrollbar-track {
+        background: #f1f3f6;
+    }
+
+    .station-table-container::-webkit-scrollbar-thumb {
+        background: #b8c2ce;
+        border-radius: 10px;
+    }
+
+        .station-table-container::-webkit-scrollbar-thumb:hover {
+            background: #8e9aaa;
+        }
