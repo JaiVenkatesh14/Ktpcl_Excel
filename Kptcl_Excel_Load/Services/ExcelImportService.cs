@@ -13,6 +13,10 @@ namespace KPTCL_API_STAGG.Services
             _configuration = configuration;
         }
 
+        // =========================================================
+        // MAIN IMPORT METHOD
+        // =========================================================
+
         public async Task<ExcelImportResult> ImportExcelAsync(IFormFile file)
         {
             var result = new ExcelImportResult
@@ -20,9 +24,9 @@ namespace KPTCL_API_STAGG.Services
                 Success = true
             };
 
-            // ==========================================
+            // =====================================================
             // FILE VALIDATION
-            // ==========================================
+            // =====================================================
 
             if (file == null || file.Length == 0)
             {
@@ -33,11 +37,14 @@ namespace KPTCL_API_STAGG.Services
 
             var extension = Path.GetExtension(file.FileName);
 
-            if (!extension.Equals(".xlsx",
-                StringComparison.OrdinalIgnoreCase))
+            if (!extension.Equals(
+                    ".xlsx",
+                    StringComparison.OrdinalIgnoreCase))
             {
                 result.Success = false;
-                result.Message = "Only .xlsx Excel files are supported.";
+                result.Message =
+                    "Only .xlsx Excel files are supported.";
+
                 return result;
             }
 
@@ -46,14 +53,15 @@ namespace KPTCL_API_STAGG.Services
             if (file.Length > maxFileSize)
             {
                 result.Success = false;
-                result.Message = "Excel file size cannot exceed 10 MB.";
+                result.Message =
+                    "Excel file size cannot exceed 10 MB.";
+
                 return result;
             }
 
-
-            // ==========================================
+            // =====================================================
             // READ EXCEL
-            // ==========================================
+            // =====================================================
 
             using var stream = new MemoryStream();
 
@@ -63,17 +71,16 @@ namespace KPTCL_API_STAGG.Services
 
             using var workbook = new XLWorkbook(stream);
 
-
-            // ==========================================
+            // =====================================================
             // REQUIRED SHEETS
-            // ==========================================
+            // =====================================================
 
             var requiredSheets = new[]
             {
-        "Combined_work_details",
-        "Station_details",
-        "Line_names_with_line_codes"
-    };
+                "Combined_work_details",
+                "Station_details",
+                "Line_names_with_line_codes"
+            };
 
             foreach (var sheetName in requiredSheets)
             {
@@ -88,42 +95,114 @@ namespace KPTCL_API_STAGG.Services
                 }
             }
 
+            var combinedSheet =
+                workbook.Worksheet("Combined_work_details");
 
-            // ==========================================
-            // EXTRACT
-            // ==========================================
+            var stationSheet =
+                workbook.Worksheet("Station_details");
 
-            var workOrders = ExtractWorkOrders(
-                workbook.Worksheet("Combined_work_details"),
+            var lineSheet =
+                workbook.Worksheet("Line_names_with_line_codes");
+
+            // =====================================================
+            // 1. EXTRACT WORK ORDERS
+            // =====================================================
+
+            var workOrders =
+                ExtractWorkOrders(
+                    combinedSheet,
+                    result);
+
+            // =====================================================
+            // 2. BUILD STATION -> SUB WORK MAPPING
+            //
+            // Station Code -> one or more Sub Work Codes
+            // =====================================================
+
+            var stationWorkCodeMap =
+                BuildStationWorkCodeMap(
+                    combinedSheet,
+                    result);
+
+            // =====================================================
+            // 3. BUILD LINE -> SUB WORK MAPPING
+            //
+            // Line Code -> one or more Sub Work Codes
+            // =====================================================
+
+            var lineWorkCodeMap =
+                BuildLineWorkCodeMap(
+                    combinedSheet,
+                    result);
+
+            // =====================================================
+            // 4. EXTRACT ALL STATIONS
+            //
+            // IMPORTANT:
+            // Do NOT filter stations.
+            //
+            // Every row in Station_details will be loaded.
+            //
+            // Referenced stations receive their Sub Work Code.
+            // Non-referenced stations receive NULL.
+            // =====================================================
+
+            var stations =
+                ExtractStations(
+                    stationSheet,
+                    stationWorkCodeMap,
+                    result);
+
+            // =====================================================
+            // 5. EXTRACT ALL LINES
+            //
+            // IMPORTANT:
+            // Do NOT filter lines.
+            //
+            // Every row in Line_names_with_line_codes will be loaded.
+            //
+            // Referenced lines receive their Sub Work Code.
+            // Non-referenced lines receive NULL.
+            // =====================================================
+
+            var lines =
+                ExtractLines(
+                    lineSheet,
+                    lineWorkCodeMap,
+                    result);
+
+            // =====================================================
+            // 6. EXCEL VALIDATION
+            //
+            // Validate that every Station/Line referenced from
+            // Combined_work_details exists in the corresponding
+            // Excel sheet.
+            //
+            // Oracle is NOT checked here.
+            // =====================================================
+
+            ValidateWorkOrderReferences(
+                combinedSheet,
+                stationSheet,
+                lineSheet,
                 result);
-
-            var stations = ExtractStations(
-                workbook.Worksheet("Station_details"),
-                result);
-
-            var lines = ExtractLines(
-                workbook.Worksheet("Line_names_with_line_codes"),
-                result);
-
-
-            // ==========================================
-            // VALIDATION ERRORS
-            // ==========================================
 
             if (result.Errors.Count > 0)
             {
                 result.Success = false;
-
                 result.Message =
                     "Excel validation failed.";
+
+                result.WorkOrders = workOrders;
+                result.Stations = stations;
+                result.Lines = lines;
 
                 return result;
             }
 
-
-            // ==========================================
-            // DUPLICATE VALIDATION INSIDE EXCEL
-            // ==========================================
+            // =====================================================
+            // 7. DUPLICATE VALIDATION
+            // =====================================================
 
             ValidateExcelDuplicates(
                 workOrders,
@@ -138,40 +217,24 @@ namespace KPTCL_API_STAGG.Services
                 result.Message =
                     "Duplicate records were found in the Excel file.";
 
-                return result;
-            }
-
-            // ==========================================
-            // CHECK EXISTING ORACLE RECORDS
-            // ==========================================
-
-            await ValidateExistingOracleCodesAsync(
-                stations,
-                lines,
-                result);
-
-
-            if (result.Errors.Count > 0)
-            {
-                result.Success = false;
-
-                result.Message =
-                    "Excel validation failed. Some records already exist in Oracle.";
+                result.WorkOrders = workOrders;
+                result.Stations = stations;
+                result.Lines = lines;
 
                 return result;
             }
-            // ==========================================
-            // STORE EXTRACTED DATA
-            // ==========================================
+
+            // =====================================================
+            // STORE RESULT DATA
+            // =====================================================
 
             result.WorkOrders = workOrders;
             result.Stations = stations;
             result.Lines = lines;
 
-
-            // ==========================================
-            // INSERT INTO ORACLE
-            // ==========================================
+            // =====================================================
+            // 8. INSERT EVERYTHING INTO ORACLE
+            // =====================================================
 
             try
             {
@@ -185,22 +248,23 @@ namespace KPTCL_API_STAGG.Services
                 result.Success = false;
 
                 result.Message =
-                    "Excel validation succeeded, but database insertion failed.";
+                    "Excel validation succeeded, " +
+                    "but database insertion failed.";
 
-                result.Errors.Add(new ImportError
-                {
-                    Sheet = "Oracle Database",
-                    Row = 0,
-                    Message = ex.Message
-                });
+                result.Errors.Add(
+                    new ImportError
+                    {
+                        Sheet = "Oracle Database",
+                        Row = 0,
+                        Message = ex.Message
+                    });
 
                 return result;
             }
 
-
-            // ==========================================
+            // =====================================================
             // SUCCESS
-            // ==========================================
+            // =====================================================
 
             result.Success = true;
 
@@ -211,95 +275,123 @@ namespace KPTCL_API_STAGG.Services
         }
 
 
-        // ==========================================
+        // =========================================================
         // WORK ORDERS
-        // ==========================================
+        // =========================================================
 
         private List<WorkOrderImportModel> ExtractWorkOrders(
             IXLWorksheet worksheet,
             ExcelImportResult result)
         {
-            var records = new List<WorkOrderImportModel>();
+            var records =
+                new List<WorkOrderImportModel>();
 
-            var rows = worksheet
-                .RowsUsed()
-                .Skip(1);
+            var rows =
+                worksheet
+                    .RowsUsed()
+                    .Skip(1);
 
             string? currentWorkCode = null;
             string? currentWorkName = null;
 
             foreach (var row in rows)
             {
-                var workCode = GetString(row.Cell(4));
-                var workName = GetString(row.Cell(6));
+                var workCode =
+                    GetString(row.Cell(4));
 
-                var subWorkCode = GetString(row.Cell(7));
-                var subWorkName = GetString(row.Cell(8));
+                var workName =
+                    GetString(row.Cell(6));
 
-                // Survey users 1-9
-                var users = new List<string>();
+                var subWorkCode =
+                    GetString(row.Cell(7));
 
-                for (int i = 11; i <= 19; i++)
-                {
-                    var user = GetString(row.Cell(i));
+                var subWorkName =
+                    GetString(row.Cell(8));
 
-                    if (!string.IsNullOrWhiteSpace(user))
-                    {
-                        users.Add(user);
-                    }
-                }
+                // -------------------------------------------------
+                // Ignore section/header rows
+                // -------------------------------------------------
 
-                // --------------------------------
-                // Ignore completely empty rows
-                // --------------------------------
-
-                if (string.IsNullOrWhiteSpace(workCode) &&
-                    string.IsNullOrWhiteSpace(subWorkCode) &&
-                    string.IsNullOrWhiteSpace(workName) &&
-                    string.IsNullOrWhiteSpace(subWorkName))
+                if (string.IsNullOrWhiteSpace(subWorkCode))
                 {
                     continue;
                 }
 
-                // --------------------------------
-                // New parent work
-                // --------------------------------
+                // -------------------------------------------------
+                // Parent Work Code
+                // -------------------------------------------------
 
                 if (!string.IsNullOrWhiteSpace(workCode))
                 {
-                    currentWorkCode = workCode;
-                    currentWorkName = workName;
+                    currentWorkCode =
+                        workCode.Trim();
+
+                    currentWorkName =
+                        workName?.Trim();
                 }
 
-                // --------------------------------
-                // Ignore rows without work/subwork
-                // --------------------------------
+                // -------------------------------------------------
+                // Work Code required
+                // -------------------------------------------------
 
                 if (string.IsNullOrWhiteSpace(currentWorkCode))
                 {
+                    result.AddError(
+                        "Combined_work_details",
+                        row.RowNumber(),
+                        $"Work Code is missing for Sub Work Code '{subWorkCode}'."
+                    );
+
                     continue;
                 }
 
-                // --------------------------------
-                // Need subwork information
-                // --------------------------------
+                // -------------------------------------------------
+                // Sub Work Code
+                // -------------------------------------------------
 
-                if (string.IsNullOrWhiteSpace(subWorkCode) &&
-                    string.IsNullOrWhiteSpace(subWorkName))
+                if (string.IsNullOrWhiteSpace(subWorkCode))
                 {
+                    result.AddError(
+                        "Combined_work_details",
+                        row.RowNumber(),
+                        "Sub Work Code is missing."
+                    );
+
                     continue;
                 }
 
-                // --------------------------------
-                // Validation
-                // --------------------------------
+                subWorkCode =
+                    subWorkCode.Trim();
+
+                // -------------------------------------------------
+                // Sub Work Name
+                // -------------------------------------------------
+
+                if (string.IsNullOrWhiteSpace(subWorkName))
+                {
+                    result.AddError(
+                        "Combined_work_details",
+                        row.RowNumber(),
+                        $"Sub Work Name is missing for Sub Work Code '{subWorkCode}'."
+                    );
+
+                    continue;
+                }
+
+                subWorkName =
+                    subWorkName.Trim();
+
+                // -------------------------------------------------
+                // Length validation
+                // -------------------------------------------------
 
                 if (currentWorkCode.Length > 100)
                 {
                     result.AddError(
                         "Combined_work_details",
                         row.RowNumber(),
-                        "Work Code exceeds 100 characters.");
+                        "Work Code exceeds 100 characters."
+                    );
 
                     continue;
                 }
@@ -310,100 +402,342 @@ namespace KPTCL_API_STAGG.Services
                     result.AddError(
                         "Combined_work_details",
                         row.RowNumber(),
-                        "Name of Work exceeds 500 characters.");
+                        "Name of Work exceeds 500 characters."
+                    );
 
                     continue;
                 }
 
-                if (subWorkCode != null &&
-                    subWorkCode.Length > 100)
+                if (subWorkCode.Length > 100)
                 {
                     result.AddError(
                         "Combined_work_details",
                         row.RowNumber(),
-                        "Sub Work Code exceeds 100 characters.");
+                        "Sub Work Code exceeds 100 characters."
+                    );
 
                     continue;
                 }
 
-                if (subWorkName != null &&
-                    subWorkName.Length > 500)
+                if (subWorkName.Length > 500)
                 {
                     result.AddError(
                         "Combined_work_details",
                         row.RowNumber(),
-                        "Name of Subwork exceeds 500 characters.");
+                        "Name of Subwork exceeds 500 characters."
+                    );
 
                     continue;
                 }
 
-                // --------------------------------
-                // USER_NAME
-                // --------------------------------
+                // -------------------------------------------------
+                // Survey Users 1 - 9
+                //
+                // Columns 11 - 19
+                // -------------------------------------------------
 
-                var userName = users.Count > 0
-                    ? string.Join(", ", users)
-                    : null;
+                var users =
+                    new List<string>();
 
-                if (userName != null &&
-                    userName.Length > 100)
+                for (int i = 11; i <= 19; i++)
+                {
+                    var user =
+                        GetString(row.Cell(i));
+
+                    if (!string.IsNullOrWhiteSpace(user))
+                    {
+                        users.Add(user.Trim());
+                    }
+                }
+
+                // -------------------------------------------------
+                // At least one user
+                // -------------------------------------------------
+
+                if (users.Count == 0)
                 {
                     result.AddError(
                         "Combined_work_details",
                         row.RowNumber(),
-                        "Combined Survey User value exceeds 100 characters.");
+                        $"No Survey User found for Sub Work Code '{subWorkCode}'."
+                    );
 
                     continue;
                 }
 
-                records.Add(new WorkOrderImportModel
+                // -------------------------------------------------
+                // One WORK_ORDER record per user
+                // -------------------------------------------------
+
+                foreach (var user in users)
                 {
-                    WorkCode = currentWorkCode,
-                    NameOfWork = currentWorkName,
-                    SubWorkCode = subWorkCode,
-                    NameOfSubWork = subWorkName,
-                    UserName = userName,
-                    Status = 1
-                });
+                    if (user.Length > 100)
+                    {
+                        result.AddError(
+                            "Combined_work_details",
+                            row.RowNumber(),
+                            $"Survey User '{user}' exceeds 100 characters."
+                        );
+
+                        continue;
+                    }
+
+                    records.Add(
+                        new WorkOrderImportModel
+                        {
+                            WorkCode =
+                                currentWorkCode,
+
+                            NameOfWork =
+                                currentWorkName,
+
+                            SubWorkCode =
+                                subWorkCode,
+
+                            NameOfSubWork =
+                                subWorkName,
+
+                            UserName =
+                                user,
+
+                            // STATUS intentionally NULL
+                            Status = 0
+                        });
+                }
             }
 
             return records;
         }
 
 
-        // ==========================================
-        // STATIONS
-        // ==========================================
+        // =========================================================
+        // BUILD STATION MAPPING
+        //
+        // Station Code -> Sub Work Code(s)
+        // =========================================================
 
-        private List<StationImportModel> ExtractStations(
-            IXLWorksheet worksheet,
-            ExcelImportResult result)
+        private Dictionary<string, List<string>>
+            BuildStationWorkCodeMap(
+                IXLWorksheet worksheet,
+                ExcelImportResult result)
         {
-            var records = new List<StationImportModel>();
+            var map =
+                new Dictionary<string, List<string>>(
+                    StringComparer.OrdinalIgnoreCase);
 
-            var rows = worksheet
-                .RowsUsed()
-                .Skip(1);
+            var rows =
+                worksheet
+                    .RowsUsed()
+                    .Skip(1);
 
             foreach (var row in rows)
             {
-                var stationCode = GetString(row.Cell(6));
+                var subWorkCode =
+                    GetString(row.Cell(7));
+
+                var stationCode =
+                    GetString(row.Cell(9));
+
+                var lineCode =
+                    GetString(row.Cell(10));
+
+                // -------------------------------------------------
+                // Ignore section/header rows
+                // -------------------------------------------------
+
+                if (string.IsNullOrWhiteSpace(subWorkCode))
+                {
+                    continue;
+                }
+
+                subWorkCode =
+                    subWorkCode.Trim();
+
+                // -------------------------------------------------
+                // Station + Line cannot both be empty
+                // -------------------------------------------------
+
+                if (string.IsNullOrWhiteSpace(stationCode) &&
+                    string.IsNullOrWhiteSpace(lineCode))
+                {
+                    result.AddError(
+                        "Combined_work_details",
+                        row.RowNumber(),
+                        $"Sub Work '{subWorkCode}' must have either " +
+                        "a Station Code or a Line Code."
+                    );
+
+                    continue;
+                }
+
+                // -------------------------------------------------
+                // Station mapping
+                // -------------------------------------------------
+
+                if (!string.IsNullOrWhiteSpace(stationCode))
+                {
+                    stationCode =
+                        stationCode.Trim();
+
+                    if (!map.ContainsKey(stationCode))
+                    {
+                        map[stationCode] =
+                            new List<string>();
+                    }
+
+                    if (!map[stationCode].Any(
+                            x => string.Equals(
+                                x,
+                                subWorkCode,
+                                StringComparison.OrdinalIgnoreCase)))
+                    {
+                        map[stationCode]
+                            .Add(subWorkCode);
+                    }
+                }
+            }
+
+            return map;
+        }
+
+
+        // =========================================================
+        // BUILD LINE MAPPING
+        //
+        // Line Code -> Sub Work Code(s)
+        // =========================================================
+
+        private Dictionary<string, List<string>>
+            BuildLineWorkCodeMap(
+                IXLWorksheet worksheet,
+                ExcelImportResult result)
+        {
+            var map =
+                new Dictionary<string, List<string>>(
+                    StringComparer.OrdinalIgnoreCase);
+
+            var rows =
+                worksheet
+                    .RowsUsed()
+                    .Skip(1);
+
+            foreach (var row in rows)
+            {
+                var subWorkCode =
+                    GetString(row.Cell(7));
+
+                var stationCode =
+                    GetString(row.Cell(9));
+
+                var lineCode =
+                    GetString(row.Cell(10));
+
+                // -------------------------------------------------
+                // Ignore section/header rows
+                // -------------------------------------------------
+
+                if (string.IsNullOrWhiteSpace(subWorkCode))
+                {
+                    continue;
+                }
+
+                subWorkCode =
+                    subWorkCode.Trim();
+
+                // -------------------------------------------------
+                // Station + Line cannot both be empty
+                // -------------------------------------------------
+
+                if (string.IsNullOrWhiteSpace(stationCode) &&
+                    string.IsNullOrWhiteSpace(lineCode))
+                {
+                    continue;
+                }
+
+                // -------------------------------------------------
+                // Line mapping
+                // -------------------------------------------------
+
+                if (!string.IsNullOrWhiteSpace(lineCode))
+                {
+                    lineCode =
+                        lineCode.Trim();
+
+                    if (!map.ContainsKey(lineCode))
+                    {
+                        map[lineCode] =
+                            new List<string>();
+                    }
+
+                    if (!map[lineCode].Any(
+                            x => string.Equals(
+                                x,
+                                subWorkCode,
+                                StringComparison.OrdinalIgnoreCase)))
+                    {
+                        map[lineCode]
+                            .Add(subWorkCode);
+                    }
+                }
+            }
+
+            return map;
+        }
+
+
+        // =========================================================
+        // EXTRACT ALL STATIONS
+        //
+        // IMPORTANT:
+        // Every station in Station_details is returned.
+        //
+        // If referenced from Work Details:
+        //     WORK_CODE = Sub Work Code
+        //
+        // If not referenced:
+        //     WORK_CODE = NULL
+        // =========================================================
+
+        private List<StationImportModel> ExtractStations(
+            IXLWorksheet worksheet,
+            Dictionary<string, List<string>> stationWorkCodeMap,
+            ExcelImportResult result)
+        {
+            var records =
+                new List<StationImportModel>();
+
+            var rows =
+                worksheet
+                    .RowsUsed()
+                    .Skip(1);
+
+            foreach (var row in rows)
+            {
+                var stationCode =
+                    GetString(row.Cell(6));
 
                 // Empty row
                 if (string.IsNullOrWhiteSpace(stationCode))
+                {
                     continue;
+                }
+
+                stationCode =
+                    stationCode.Trim();
 
                 if (stationCode.Length > 100)
                 {
                     result.AddError(
                         "Station_details",
                         row.RowNumber(),
-                        "Station Code exceeds 100 characters.");
+                        $"Station Code '{stationCode}' exceeds 100 characters."
+                    );
 
                     continue;
                 }
 
-                var stationName = GetString(row.Cell(5));
+                var stationName =
+                    GetString(row.Cell(5));
 
                 if (stationName != null &&
                     stationName.Length > 500)
@@ -411,62 +745,118 @@ namespace KPTCL_API_STAGG.Services
                     result.AddError(
                         "Station_details",
                         row.RowNumber(),
-                        "Substation Name exceeds 500 characters.");
+                        $"Substation Name for '{stationCode}' exceeds 500 characters."
+                    );
 
                     continue;
                 }
 
-                records.Add(new StationImportModel
+                string? workCode = null;
+
+                // -------------------------------------------------
+                // Apply Sub Work Code only when this station is
+                // referenced in Combined_work_details.
+                // -------------------------------------------------
+
+                if (stationWorkCodeMap.TryGetValue(
+                        stationCode,
+                        out var subWorkCodes))
                 {
-                    Zone = GetString(row.Cell(1)),
-                    Circle = GetString(row.Cell(2)),
-                    Division = GetString(row.Cell(3)),
-                    VoltageClass = GetString(row.Cell(4)),
-                    SubstationName = stationName,
-                    StationCode = stationCode,
-                    TypeOfSubstation = GetString(row.Cell(7)),
-                    DateOfCommissioning =
-                        GetString(row.Cell(8)),
-                    WorkCode = null
-                });
+                    workCode =
+                        string.Join(
+                            ", ",
+                            subWorkCodes);
+                }
+
+                records.Add(
+                    new StationImportModel
+                    {
+                        Zone =
+                            GetString(row.Cell(1)),
+
+                        Circle =
+                            GetString(row.Cell(2)),
+
+                        Division =
+                            GetString(row.Cell(3)),
+
+                        VoltageClass =
+                            GetString(row.Cell(4)),
+
+                        SubstationName =
+                            stationName,
+
+                        StationCode =
+                            stationCode,
+
+                        TypeOfSubstation =
+                            GetString(row.Cell(7)),
+
+                        DateOfCommissioning =
+                            GetString(row.Cell(8)),
+
+                        WorkCode =
+                            workCode
+                    });
             }
 
             return records;
         }
 
 
-        // ==========================================
-        // LINE CODES
-        // ==========================================
+        // =========================================================
+        // EXTRACT ALL LINES
+        //
+        // IMPORTANT:
+        // Every line in Line_names_with_line_codes is returned.
+        //
+        // If referenced from Work Details:
+        //     WORK_CODE = Sub Work Code
+        //
+        // If not referenced:
+        //     WORK_CODE = NULL
+        // =========================================================
 
         private List<LineCodeImportModel> ExtractLines(
             IXLWorksheet worksheet,
+            Dictionary<string, List<string>> lineWorkCodeMap,
             ExcelImportResult result)
         {
-            var records = new List<LineCodeImportModel>();
+            var records =
+                new List<LineCodeImportModel>();
 
-            var rows = worksheet
-                .RowsUsed()
-                .Skip(1);
+            var rows =
+                worksheet
+                    .RowsUsed()
+                    .Skip(1);
 
             foreach (var row in rows)
             {
-                var lineCode = GetString(row.Cell(6));
+                var lineCode =
+                    GetString(row.Cell(6));
 
+                // Empty row
                 if (string.IsNullOrWhiteSpace(lineCode))
+                {
                     continue;
+                }
+
+                lineCode =
+                    lineCode.Trim();
 
                 if (lineCode.Length > 100)
                 {
                     result.AddError(
                         "Line_names_with_line_codes",
                         row.RowNumber(),
-                        "Line Code exceeds 100 characters.");
+                        $"Line Code '{lineCode}' exceeds 100 characters."
+                    );
 
                     continue;
                 }
 
-                var lineName = GetString(row.Cell(7));
+                var lineName =
+                    GetString(row.Cell(7));
 
                 if (lineName != null &&
                     lineName.Length > 500)
@@ -474,63 +864,241 @@ namespace KPTCL_API_STAGG.Services
                     result.AddError(
                         "Line_names_with_line_codes",
                         row.RowNumber(),
-                        "Line Name exceeds 500 characters.");
+                        $"Line Name for '{lineCode}' exceeds 500 characters."
+                    );
 
                     continue;
                 }
 
-                records.Add(new LineCodeImportModel
+                string? workCode = null;
+
+                // -------------------------------------------------
+                // Apply Sub Work Code only when this line is
+                // referenced in Combined_work_details.
+                // -------------------------------------------------
+
+                if (lineWorkCodeMap.TryGetValue(
+                        lineCode,
+                        out var subWorkCodes))
                 {
-                    Zone = GetString(row.Cell(2)),
-                    Circle = GetString(row.Cell(3)),
-                    Division = GetString(row.Cell(4)),
-                    VoltageClass = GetString(row.Cell(5)),
-                    LineCode = lineCode,
-                    LineName = lineName,
-                    ZoneCode = GetString(row.Cell(8)),
-                    LineType = GetString(row.Cell(9)),
-                    WorkCode = null
-                });
+                    workCode =
+                        string.Join(
+                            ", ",
+                            subWorkCodes);
+                }
+
+                records.Add(
+                    new LineCodeImportModel
+                    {
+                        Zone =
+                            GetString(row.Cell(2)),
+
+                        Circle =
+                            GetString(row.Cell(3)),
+
+                        Division =
+                            GetString(row.Cell(4)),
+
+                        VoltageClass =
+                            GetString(row.Cell(5)),
+
+                        LineCode =
+                            lineCode,
+
+                        LineName =
+                            lineName,
+
+                        ZoneCode =
+                            GetString(row.Cell(8)),
+
+                        LineType =
+                            GetString(row.Cell(9)),
+
+                        WorkCode =
+                            workCode
+                    });
             }
 
             return records;
         }
 
 
-        // ==========================================
-        // HELPER
-        // ==========================================
+        // =========================================================
+        // VALIDATE WORK ORDER REFERENCES AGAINST EXCEL
+        //
+        // Station Code must exist in Station_details.
+        //
+        // Line Code must exist in
+        // Line_names_with_line_codes.
+        //
+        // Oracle is NOT queried here.
+        // =========================================================
 
-        private static string? GetString(IXLCell cell)
+        private void ValidateWorkOrderReferences(
+            IXLWorksheet combinedSheet,
+            IXLWorksheet stationSheet,
+            IXLWorksheet lineSheet,
+            ExcelImportResult result)
         {
-            if (cell.IsEmpty())
-                return null;
+            // =====================================================
+            // BUILD STATION CODE SET
+            // =====================================================
 
-            var value = cell.GetValue<string>();
+            var stationCodes =
+                new HashSet<string>(
+                    StringComparer.OrdinalIgnoreCase);
 
-            if (string.IsNullOrWhiteSpace(value))
-                return null;
+            foreach (var row in stationSheet.RowsUsed().Skip(1))
+            {
+                var stationCode =
+                    GetString(row.Cell(6));
 
-            return value.Trim();
+                if (!string.IsNullOrWhiteSpace(stationCode))
+                {
+                    stationCodes.Add(
+                        stationCode.Trim());
+                }
+            }
+
+            // =====================================================
+            // BUILD LINE CODE SET
+            // =====================================================
+
+            var lineCodes =
+                new HashSet<string>(
+                    StringComparer.OrdinalIgnoreCase);
+
+            foreach (var row in lineSheet.RowsUsed().Skip(1))
+            {
+                var lineCode =
+                    GetString(row.Cell(6));
+
+                if (!string.IsNullOrWhiteSpace(lineCode))
+                {
+                    lineCodes.Add(
+                        lineCode.Trim());
+                }
+            }
+
+            // =====================================================
+            // CHECK WORK DETAILS
+            // =====================================================
+
+            foreach (var row in combinedSheet.RowsUsed().Skip(1))
+            {
+                var subWorkCode =
+                    GetString(row.Cell(7));
+
+                var stationCode =
+                    GetString(row.Cell(9));
+
+                var lineCode =
+                    GetString(row.Cell(10));
+
+                // -------------------------------------------------
+                // Ignore rows without Sub Work
+                // -------------------------------------------------
+
+                if (string.IsNullOrWhiteSpace(subWorkCode))
+                {
+                    continue;
+                }
+
+                subWorkCode =
+                    subWorkCode.Trim();
+
+                // -------------------------------------------------
+                // Both Station and Line empty
+                // -------------------------------------------------
+
+                if (string.IsNullOrWhiteSpace(stationCode) &&
+                    string.IsNullOrWhiteSpace(lineCode))
+                {
+                    result.AddError(
+                        "Combined_work_details",
+                        row.RowNumber(),
+                        $"Sub Work '{subWorkCode}' must have either " +
+                        "a Station Code or a Line Code."
+                    );
+
+                    continue;
+                }
+
+                // -------------------------------------------------
+                // Validate Station Code
+                // -------------------------------------------------
+
+                if (!string.IsNullOrWhiteSpace(stationCode))
+                {
+                    stationCode =
+                        stationCode.Trim();
+
+                    if (!stationCodes.Contains(
+                            stationCode))
+                    {
+                        result.AddError(
+                            "Combined_work_details",
+                            row.RowNumber(),
+                            $"Station Code '{stationCode}' referenced by " +
+                            $"Sub Work '{subWorkCode}' does not exist in " +
+                            "the Station_details Excel sheet."
+                        );
+                    }
+                }
+
+                // -------------------------------------------------
+                // Validate Line Code
+                // -------------------------------------------------
+
+                if (!string.IsNullOrWhiteSpace(lineCode))
+                {
+                    lineCode =
+                        lineCode.Trim();
+
+                    if (!lineCodes.Contains(
+                            lineCode))
+                    {
+                        result.AddError(
+                            "Combined_work_details",
+                            row.RowNumber(),
+                            $"Line Code '{lineCode}' referenced by " +
+                            $"Sub Work '{subWorkCode}' does not exist in " +
+                            "the Line_names_with_line_codes Excel sheet."
+                        );
+                    }
+                }
+            }
         }
 
-        private void ValidateExcelDuplicates(
-    List<WorkOrderImportModel> workOrders,
-    List<StationImportModel> stations,
-    List<LineCodeImportModel> lines,
-    ExcelImportResult result)
-        {
-            // ==========================================
-            // WORK ORDER DUPLICATES
-            // ==========================================
 
-            var duplicateWorkOrders = workOrders
-                .GroupBy(x => new
-                {
-                    x.WorkCode,
-                    x.SubWorkCode
-                })
-                .Where(g => g.Count() > 1);
+        // =========================================================
+        // DUPLICATE VALIDATION
+        // =========================================================
+
+        private void ValidateExcelDuplicates(
+            List<WorkOrderImportModel> workOrders,
+            List<StationImportModel> stations,
+            List<LineCodeImportModel> lines,
+            ExcelImportResult result)
+        {
+            // =====================================================
+            // WORK ORDER DUPLICATES
+            // =====================================================
+
+            var duplicateWorkOrders =
+                workOrders
+                    .GroupBy(x => new
+                    {
+                        WorkCode =
+                            Normalize(x.WorkCode),
+
+                        SubWorkCode =
+                            Normalize(x.SubWorkCode),
+
+                        UserName =
+                            Normalize(x.UserName)
+                    })
+                    .Where(g => g.Count() > 1);
 
             foreach (var group in duplicateWorkOrders)
             {
@@ -538,51 +1106,81 @@ namespace KPTCL_API_STAGG.Services
                     "Combined_work_details",
                     0,
                     $"Duplicate Work Order found: " +
-                    $"{group.Key.WorkCode} / {group.Key.SubWorkCode}");
+                    $"{group.Key.WorkCode} / " +
+                    $"{group.Key.SubWorkCode} / " +
+                    $"{group.Key.UserName}"
+                );
             }
 
+            // =====================================================
+            // STATION DUPLICATES
+            // =====================================================
 
-            // ==========================================
-            // STATION CODE DUPLICATES
-            // ==========================================
-
-            var duplicateStations = stations
-                .GroupBy(x => x.StationCode)
-                .Where(g => g.Count() > 1);
+            var duplicateStations =
+                stations
+                    .GroupBy(
+                        x =>
+                            Normalize(x.StationCode),
+                        StringComparer.OrdinalIgnoreCase)
+                    .Where(g => g.Count() > 1);
 
             foreach (var group in duplicateStations)
             {
                 result.AddError(
                     "Station_details",
                     0,
-                    $"Duplicate Station Code found: {group.Key}");
+                    $"Duplicate Station Code found: " +
+                    $"{group.Key}"
+                );
             }
 
+            // =====================================================
+            // LINE DUPLICATES
+            // =====================================================
 
-            // ==========================================
-            // LINE CODE DUPLICATES
-            // ==========================================
-
-            var duplicateLines = lines
-                .GroupBy(x => x.LineCode)
-                .Where(g => g.Count() > 1);
+            var duplicateLines =
+                lines
+                    .GroupBy(
+                        x =>
+                            Normalize(x.LineCode),
+                        StringComparer.OrdinalIgnoreCase)
+                    .Where(g => g.Count() > 1);
 
             foreach (var group in duplicateLines)
             {
                 result.AddError(
                     "Line_names_with_line_codes",
                     0,
-                    $"Duplicate Line Code found: {group.Key}");
+                    $"Duplicate Line Code found: " +
+                    $"{group.Key}"
+                );
             }
         }
 
+
+        // =========================================================
+        // INSERT EVERYTHING INTO ORACLE
+        //
+        // WORK_ORDER
+        //     INSERT
+        //
+        // STATION_DETAILS
+        //     INSERT all rows
+        //     WORK_CODE gets mapped Sub Work Code or NULL
+        //
+        // LINE_CODE_DETAILS
+        //     INSERT all rows
+        //     WORK_CODE gets mapped Sub Work Code or NULL
+        // =========================================================
+
         private async Task InsertIntoOracleAsync(
-    List<WorkOrderImportModel> workOrders,
-    List<StationImportModel> stations,
-    List<LineCodeImportModel> lines)
+            List<WorkOrderImportModel> workOrders,
+            List<StationImportModel> stations,
+            List<LineCodeImportModel> lines)
         {
             var connectionString =
-                _configuration.GetConnectionString("OracleConnection");
+                _configuration.GetConnectionString(
+                    "OracleConnection");
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {
@@ -600,379 +1198,404 @@ namespace KPTCL_API_STAGG.Services
 
             try
             {
-                // ==========================================
-                // WORK_ORDER
-                // ==========================================
+                // =================================================
+                // 1. WORK_ORDER
+                // =================================================
 
                 foreach (var work in workOrders)
                 {
                     const string sql = @"
-                INSERT INTO WORK_ORDER
-                (
-                    WORK_CODE,
-                    NAME_OF_WORK,
-                    SUB_WORKCODE,
-                    NAME_OF_SUBWORK,
-                    USER_NAME,
-                    STATUS
-                )
-                VALUES
-                (
-                    :WORK_CODE,
-                    :NAME_OF_WORK,
-                    :SUB_WORKCODE,
-                    :NAME_OF_SUBWORK,
-                    :USER_NAME,
-                    :STATUS
-                )";
+                        INSERT INTO SYSTEM.WORK_ORDER
+                        (
+                            WORK_CODE,
+                            NAME_OF_WORK,
+                            SUB_WORKCODE,
+                            NAME_OF_SUBWORK,
+                            USER_NAME,
+                            STATUS
+                        )
+                        VALUES
+                        (
+                            :WORK_CODE,
+                            :NAME_OF_WORK,
+                            :SUB_WORKCODE,
+                            :NAME_OF_SUBWORK,
+                            :USER_NAME,
+                            :STATUS
+                        )";
 
                     await using var command =
-                        new OracleCommand(sql, connection);
+    new OracleCommand(
+        sql,
+        connection);
 
-                    command.Transaction = transaction;
+                    command.BindByName = true;
 
+                    command.Transaction =
+                        transaction;
                     command.Parameters.Add(
                         ":WORK_CODE",
                         OracleDbType.Varchar2,
                         100).Value =
-                        (object?)work.WorkCode ?? DBNull.Value;
+                        (object?)work.WorkCode ??
+                        DBNull.Value;
 
                     command.Parameters.Add(
                         ":NAME_OF_WORK",
                         OracleDbType.Varchar2,
                         500).Value =
-                        (object?)work.NameOfWork ?? DBNull.Value;
+                        (object?)work.NameOfWork ??
+                        DBNull.Value;
 
                     command.Parameters.Add(
                         ":SUB_WORKCODE",
                         OracleDbType.Varchar2,
                         100).Value =
-                        (object?)work.SubWorkCode ?? DBNull.Value;
+                        (object?)work.SubWorkCode ??
+                        DBNull.Value;
 
                     command.Parameters.Add(
                         ":NAME_OF_SUBWORK",
                         OracleDbType.Varchar2,
                         500).Value =
-                        (object?)work.NameOfSubWork ?? DBNull.Value;
+                        (object?)work.NameOfSubWork ??
+                        DBNull.Value;
 
                     command.Parameters.Add(
                         ":USER_NAME",
                         OracleDbType.Varchar2,
                         100).Value =
-                        (object?)work.UserName ?? DBNull.Value;
+                        (object?)work.UserName ??
+                        DBNull.Value;
 
+                    // STATUS remains NULL
                     command.Parameters.Add(
                         ":STATUS",
                         OracleDbType.Int32).Value =
-                        work.Status;
+                        DBNull.Value;
 
                     await command.ExecuteNonQueryAsync();
                 }
 
 
-                // ==========================================
-                // STATION_DETAILS
-                // ==========================================
+                // =================================================
+                // 2. STATION_DETAILS
+                //
+                // INSERT ALL STATIONS
+                //
+                // If Station Code already exists:
+                // update WORK_CODE
+                //
+                // Otherwise:
+                // insert complete station record.
+                // =================================================
 
                 foreach (var station in stations)
                 {
                     const string sql = @"
-                INSERT INTO STATION_DETAILS
-                (
-                    ZONE,
-                    CIRCLE,
-                    DIVISION,
-                    VOLTAGE_CLASS,
-                    SUBSTATION_NAME,
-                    STATION_CODE,
-                    TYPE_OF_SUBSTATION,
-                    DATE_OF_COMMISSIONING,
-                    WORK_CODE
-                )
-                VALUES
-                (
-                    :ZONE,
-                    :CIRCLE,
-                    :DIVISION,
-                    :VOLTAGE_CLASS,
-                    :SUBSTATION_NAME,
-                    :STATION_CODE,
-                    :TYPE_OF_SUBSTATION,
-                    :DATE_OF_COMMISSIONING,
-                    :WORK_CODE
-                )";
+                        MERGE INTO SYSTEM.STATION_DETAILS target
+                        USING
+                        (
+                            SELECT
+                                :STATION_CODE AS STATION_CODE
+                            FROM DUAL
+                        ) source
+                        ON
+                        (
+                            TRIM(UPPER(target.STATION_CODE)) =
+                            TRIM(UPPER(source.STATION_CODE))
+                        )
+                        WHEN MATCHED THEN
+                            UPDATE SET
+                                target.WORK_CODE = :WORK_CODE
+                        WHEN NOT MATCHED THEN
+                            INSERT
+                            (
+                                ZONE,
+                                CIRCLE,
+                                DIVISION,
+                                VOLTAGE_CLASS,
+                                SUBSTATION_NAME,
+                                STATION_CODE,
+                                TYPE_OF_SUBSTATION,
+                                DATE_OF_COMMISSIONING,
+                                WORK_CODE
+                            )
+                            VALUES
+                            (
+                                :ZONE,
+                                :CIRCLE,
+                                :DIVISION,
+                                :VOLTAGE_CLASS,
+                                :SUBSTATION_NAME,
+                                :STATION_CODE,
+                                :TYPE_OF_SUBSTATION,
+                                :DATE_OF_COMMISSIONING,
+                                :WORK_CODE
+                            )";
 
                     await using var command =
-                        new OracleCommand(sql, connection);
+    new OracleCommand(
+        sql,
+        connection);
 
-                    command.Transaction = transaction;
+                    command.BindByName = true;
 
-                    command.Parameters.Add(
-                        ":ZONE",
-                        OracleDbType.Varchar2,
-                        100).Value =
-                        (object?)station.Zone ?? DBNull.Value;
-
-                    command.Parameters.Add(
-                        ":CIRCLE",
-                        OracleDbType.Varchar2,
-                        100).Value =
-                        (object?)station.Circle ?? DBNull.Value;
-
-                    command.Parameters.Add(
-                        ":DIVISION",
-                        OracleDbType.Varchar2,
-                        100).Value =
-                        (object?)station.Division ?? DBNull.Value;
-
-                    command.Parameters.Add(
-                        ":VOLTAGE_CLASS",
-                        OracleDbType.Varchar2,
-                        100).Value =
-                        (object?)station.VoltageClass ?? DBNull.Value;
-
-                    command.Parameters.Add(
-                        ":SUBSTATION_NAME",
-                        OracleDbType.Varchar2,
-                        500).Value =
-                        (object?)station.SubstationName ?? DBNull.Value;
+                    command.Transaction =
+                        transaction;
 
                     command.Parameters.Add(
                         ":STATION_CODE",
                         OracleDbType.Varchar2,
                         100).Value =
-                        (object?)station.StationCode ?? DBNull.Value;
+                        station.StationCode!.Trim();
 
-                    command.Parameters.Add(
-                        ":TYPE_OF_SUBSTATION",
-                        OracleDbType.Varchar2,
-                        100).Value =
-                        (object?)station.TypeOfSubstation ?? DBNull.Value;
-
-                    command.Parameters.Add(
-                        ":DATE_OF_COMMISSIONING",
-                        OracleDbType.Varchar2,
-                        100).Value =
-                        (object?)station.DateOfCommissioning ?? DBNull.Value;
-
-                    // Excel doesn't provide Work Code
                     command.Parameters.Add(
                         ":WORK_CODE",
                         OracleDbType.Varchar2,
                         100).Value =
+                        (object?)station.WorkCode ??
                         DBNull.Value;
-
-                    await command.ExecuteNonQueryAsync();
-                }
-
-
-                // ==========================================
-                // LINE_CODE_DETAILS
-                // ==========================================
-
-                foreach (var line in lines)
-                {
-                    const string sql = @"
-                INSERT INTO LINE_CODE_DETAILS
-                (
-                    ZONE,
-                    CIRCLE,
-                    DIVISION,
-                    VOLTAGECLASS,
-                    LINE_CODE,
-                    LINE_NAME,
-                    ZONE_CODE,
-                    LINE_TYPE,
-                    WORK_CODE
-                )
-                VALUES
-                (
-                    :ZONE,
-                    :CIRCLE,
-                    :DIVISION,
-                    :VOLTAGECLASS,
-                    :LINE_CODE,
-                    :LINE_NAME,
-                    :ZONE_CODE,
-                    :LINE_TYPE,
-                    :WORK_CODE
-                )";
-
-                    await using var command =
-                        new OracleCommand(sql, connection);
-
-                    command.Transaction = transaction;
 
                     command.Parameters.Add(
                         ":ZONE",
                         OracleDbType.Varchar2,
                         100).Value =
-                        (object?)line.Zone ?? DBNull.Value;
+                        (object?)station.Zone ??
+                        DBNull.Value;
 
                     command.Parameters.Add(
                         ":CIRCLE",
                         OracleDbType.Varchar2,
                         100).Value =
-                        (object?)line.Circle ?? DBNull.Value;
+                        (object?)station.Circle ??
+                        DBNull.Value;
 
                     command.Parameters.Add(
                         ":DIVISION",
                         OracleDbType.Varchar2,
                         100).Value =
-                        (object?)line.Division ?? DBNull.Value;
+                        (object?)station.Division ??
+                        DBNull.Value;
 
                     command.Parameters.Add(
-                        ":VOLTAGECLASS",
+                        ":VOLTAGE_CLASS",
                         OracleDbType.Varchar2,
                         100).Value =
-                        (object?)line.VoltageClass ?? DBNull.Value;
+                        (object?)station.VoltageClass ??
+                        DBNull.Value;
 
                     command.Parameters.Add(
-                        ":LINE_CODE",
-                        OracleDbType.Varchar2,
-                        100).Value =
-                        (object?)line.LineCode ?? DBNull.Value;
-
-                    command.Parameters.Add(
-                        ":LINE_NAME",
+                        ":SUBSTATION_NAME",
                         OracleDbType.Varchar2,
                         500).Value =
-                        (object?)line.LineName ?? DBNull.Value;
+                        (object?)station.SubstationName ??
+                        DBNull.Value;
 
                     command.Parameters.Add(
-                        ":ZONE_CODE",
+                        ":TYPE_OF_SUBSTATION",
                         OracleDbType.Varchar2,
                         100).Value =
-                        (object?)line.ZoneCode ?? DBNull.Value;
+                        (object?)station.TypeOfSubstation ??
+                        DBNull.Value;
 
                     command.Parameters.Add(
-                        ":LINE_TYPE",
+                        ":DATE_OF_COMMISSIONING",
                         OracleDbType.Varchar2,
                         100).Value =
-                        (object?)line.LineType ?? DBNull.Value;
-
-                    // Excel doesn't provide Work Code
-                    command.Parameters.Add(
-                        ":WORK_CODE",
-                        OracleDbType.Varchar2,
-                        100).Value =
+                        (object?)station.DateOfCommissioning ??
                         DBNull.Value;
 
                     await command.ExecuteNonQueryAsync();
                 }
 
 
-                // ==========================================
+                // =================================================
+                // 3. LINE_CODE_DETAILS
+                //
+                // INSERT ALL LINES
+                //
+                // If Line Code already exists:
+                // update WORK_CODE
+                //
+                // Otherwise:
+                // insert complete line record.
+                // =================================================
+
+                foreach (var line in lines)
+                {
+                    const string sql = @"
+                        MERGE INTO SYSTEM.LINE_CODE_DETAILS target
+                        USING
+                        (
+                            SELECT
+                                :LINE_CODE AS LINE_CODE
+                            FROM DUAL
+                        ) source
+                        ON
+                        (
+                            TRIM(UPPER(target.LINE_CODE)) =
+                            TRIM(UPPER(source.LINE_CODE))
+                        )
+                        WHEN MATCHED THEN
+                            UPDATE SET
+                                target.WORK_CODE = :WORK_CODE
+                        WHEN NOT MATCHED THEN
+                            INSERT
+                            (
+                                ZONE,
+                                CIRCLE,
+                                DIVISION,
+                                VOLTAGECLASS,
+                                LINE_CODE,
+                                LINE_NAME,
+                                ZONE_CODE,
+                                LINE_TYPE,
+                                WORK_CODE
+                            )
+                            VALUES
+                            (
+                                :ZONE,
+                                :CIRCLE,
+                                :DIVISION,
+                                :VOLTAGECLASS,
+                                :LINE_CODE,
+                                :LINE_NAME,
+                                :ZONE_CODE,
+                                :LINE_TYPE,
+                                :WORK_CODE
+                            )";
+
+                    await using var command =
+    new OracleCommand(
+        sql,
+        connection);
+
+                    command.BindByName = true;
+
+                    command.Transaction =
+                        transaction;
+
+                    command.Parameters.Add(
+                        ":LINE_CODE",
+                        OracleDbType.Varchar2,
+                        100).Value =
+                        line.LineCode!.Trim();
+
+                    command.Parameters.Add(
+                        ":WORK_CODE",
+                        OracleDbType.Varchar2,
+                        100).Value =
+                        (object?)line.WorkCode ??
+                        DBNull.Value;
+
+                    command.Parameters.Add(
+                        ":ZONE",
+                        OracleDbType.Varchar2,
+                        100).Value =
+                        (object?)line.Zone ??
+                        DBNull.Value;
+
+                    command.Parameters.Add(
+                        ":CIRCLE",
+                        OracleDbType.Varchar2,
+                        100).Value =
+                        (object?)line.Circle ??
+                        DBNull.Value;
+
+                    command.Parameters.Add(
+                        ":DIVISION",
+                        OracleDbType.Varchar2,
+                        100).Value =
+                        (object?)line.Division ??
+                        DBNull.Value;
+
+                    // IMPORTANT:
+                    // Oracle column is VOLTAGECLASS
+                    // NOT VOLTAGE_CLASS
+                    command.Parameters.Add(
+                        ":VOLTAGECLASS",
+                        OracleDbType.Varchar2,
+                        100).Value =
+                        (object?)line.VoltageClass ??
+                        DBNull.Value;
+
+                    command.Parameters.Add(
+                        ":LINE_NAME",
+                        OracleDbType.Varchar2,
+                        500).Value =
+                        (object?)line.LineName ??
+                        DBNull.Value;
+
+                    command.Parameters.Add(
+                        ":ZONE_CODE",
+                        OracleDbType.Varchar2,
+                        100).Value =
+                        (object?)line.ZoneCode ??
+                        DBNull.Value;
+
+                    command.Parameters.Add(
+                        ":LINE_TYPE",
+                        OracleDbType.Varchar2,
+                        100).Value =
+                        (object?)line.LineType ??
+                        DBNull.Value;
+
+                    await command.ExecuteNonQueryAsync();
+                }
+
+
+                // =================================================
                 // COMMIT
-                // ==========================================
+                // =================================================
 
                 await transaction.CommitAsync();
             }
             catch
             {
-                // ==========================================
-                // ROLLBACK
-                // ==========================================
+                // =================================================
+                // ROLLBACK EVERYTHING
+                // =================================================
 
                 await transaction.RollbackAsync();
 
                 throw;
             }
         }
-        private async Task ValidateExistingOracleCodesAsync(
-    List<StationImportModel> stations,
-    List<LineCodeImportModel> lines,
-    ExcelImportResult result)
+
+
+        // =========================================================
+        // NORMALIZE
+        // =========================================================
+
+        private static string Normalize(
+            string? value)
         {
-            var connectionString =
-                _configuration.GetConnectionString("OracleConnection");
+            return value?.Trim() ?? string.Empty;
+        }
 
-            if (string.IsNullOrWhiteSpace(connectionString))
+
+        // =========================================================
+        // GET STRING
+        // =========================================================
+
+        private static string? GetString(
+            IXLCell cell)
+        {
+            if (cell.IsEmpty())
             {
-                result.AddError(
-                    "Oracle Database",
-                    0,
-                    "Oracle connection string was not found.");
-
-                return;
+                return null;
             }
 
-            await using var connection =
-                new OracleConnection(connectionString);
+            var value =
+                cell.GetValue<string>();
 
-            await connection.OpenAsync();
-
-
-            // ==========================================
-            // CHECK STATION CODES
-            // ==========================================
-
-            foreach (var station in stations)
+            if (string.IsNullOrWhiteSpace(value))
             {
-                if (string.IsNullOrWhiteSpace(station.StationCode))
-                    continue;
-
-                const string sql = @"
-            SELECT COUNT(1)
-            FROM STATION_DETAILS
-            WHERE STATION_CODE = :STATION_CODE";
-
-                await using var command =
-                    new OracleCommand(sql, connection);
-
-                command.Parameters.Add(
-                    ":STATION_CODE",
-                    OracleDbType.Varchar2,
-                    100).Value =
-                    station.StationCode;
-
-                var count =
-                    Convert.ToInt32(await command.ExecuteScalarAsync());
-
-                if (count > 0)
-                {
-                    result.AddError(
-                        "Station_details",
-                        0,
-                        $"Station Code '{station.StationCode}' already exists in STATION_DETAILS.");
-                }
+                return null;
             }
 
-
-            // ==========================================
-            // CHECK LINE CODES
-            // ==========================================
-
-            foreach (var line in lines)
-            {
-                if (string.IsNullOrWhiteSpace(line.LineCode))
-                    continue;
-
-                const string sql = @"
-            SELECT COUNT(1)
-            FROM LINE_CODE_DETAILS
-            WHERE LINE_CODE = :LINE_CODE";
-
-                await using var command =
-                    new OracleCommand(sql, connection);
-
-                command.Parameters.Add(
-                    ":LINE_CODE",
-                    OracleDbType.Varchar2,
-                    100).Value =
-                    line.LineCode;
-
-                var count =
-                    Convert.ToInt32(await command.ExecuteScalarAsync());
-
-                if (count > 0)
-                {
-                    result.AddError(
-                        "Line_names_with_line_codes",
-                        0,
-                        $"Line Code '{line.LineCode}' already exists in LINE_CODE_DETAILS.");
-                }
-            }
+            return value.Trim();
         }
     }
 }

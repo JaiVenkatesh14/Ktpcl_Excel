@@ -221,7 +221,6 @@ E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\staticwebassets.bu
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\staticwebassets.development.json
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\staticwebassets.build.endpoints.json
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\swae.build.ex.cache
-E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\Kptcl_Ex.747945EA.Up2Date
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\Kptcl_Excel_Load.dll
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\refint\Kptcl_Excel_Load.dll
@@ -239,4 +238,6 @@ E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\bin\Debug\net10.0\RBush.dll
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\bin\Debug\net10.0\SixLabors.Fonts.dll
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\bin\Debug\net10.0\System.IO.Packaging.dll
 E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\bin\Debug\net10.0\System.Linq.Dynamic.Core.dll
-E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\compressed\rkqv6tvtji-{0}-yi56oag59v-yi56oag59v.gz
+E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\bin\Debug\net10.0\dotnet-tools.json
+E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+E:\Kptcl_Excel\Ktpcl_Excel\Kptcl_Excel_Load\obj\Debug\net10.0\compressed\rkqv6tvtji-{0}-dtgar35r2m-dtgar35r2m.gz

@@ -656,18 +656,55 @@
                     // Add child sub work
                     // ---------------------------------------------
 
-                    parent.subWorks.push({
+                    const existingSubWork = parent.subWorks.find(
+    x => x.subWorkCode === subWorkCode
+);
 
-                        subWorkCode:
-                            subWorkCode,
+if (existingSubWork) {
 
-                        nameOfSubWork:
-                            nameOfSubWork,
+    if (userName) {
 
-                        userName:
-                            userName
+        const existingUsers = existingSubWork.userName
+            ? existingSubWork.userName
+                .split(",")
+                .map(x => x.trim())
+                .filter(Boolean)
+            : [];
 
-                    });
+        const newUsers = userName
+            .split(",")
+            .map(x => x.trim())
+            .filter(Boolean);
+
+        newUsers.forEach(user => {
+
+            if (!existingUsers.includes(user)) {
+                existingUsers.push(user);
+            }
+
+        });
+
+        existingSubWork.userName =
+            existingUsers.join(", ");
+    }
+
+}
+else {
+
+    parent.subWorks.push({
+
+        subWorkCode:
+            subWorkCode,
+
+        nameOfSubWork:
+            nameOfSubWork,
+
+        userName:
+            userName || ""
+
+    });
+
+}
 
                 });
 
@@ -717,80 +754,71 @@
                     // ---------------------------------------------
 
                     let subWorkHtml = "";
-
-
-                    work.subWorks.forEach(function (sub) {
-
-                        subWorkHtml += `
-
-                            <div class="sub-work-item">
-
-                                <div class="sub-work-branch">
-                                    └─
-                                </div>
-
-                                <div class="sub-work-content">
-
-                                    <div class="sub-work-heading">
-
-                                        <span class="sub-work-label">
-                                            SUB WORK
-                                        </span>
-
-                                        <span class="sub-work-code">
-                                            ${escapeHtml(
-                                                sub.subWorkCode || ""
-                                            )}
-                                        </span>
-
-                                    </div>
-
-                                    <div class="sub-work-name">
-
-                                        ${escapeHtml(
-                                            sub.nameOfSubWork || ""
-                                        )}
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        `;
-
-                    });
-
-
-                    // ---------------------------------------------
-                    // USERS
-                    // Each child user is displayed separately
-                    // ---------------------------------------------
-
                     let usersHtml = "";
 
 
-                    work.subWorks.forEach(function (sub) {
+                    work.subWorks.forEach(function(sub) {
 
-                        if (!sub.userName) {
-                            return;
-                        }
+                        // ---------------------------------------------
+                        // SUB WORK
+                        // ---------------------------------------------
 
+                        subWorkHtml += `
+
+                <div class="sub-work-item">
+
+                    <div class="sub-work-branch">
+                        └─
+                    </div>
+
+                    <div class="sub-work-content">
+
+                        <div class="sub-work-heading">
+
+                            <span class="sub-work-label">
+                                SUB WORK
+                            </span>
+
+                            <span class="sub-work-code">
+                                ${escapeHtml(
+                            sub.subWorkCode || ""
+                        )}
+                            </span>
+
+                        </div>
+
+                        <div class="sub-work-name">
+
+                            ${escapeHtml(
+                            sub.nameOfSubWork || ""
+                        )}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+                        // ---------------------------------------------
+                        // USER FOR THIS SUB WORK
+                        // ---------------------------------------------
 
                         usersHtml += `
 
-                            <div class="work-user-item">
+                <div class="work-user-item">
 
-                                ${escapeHtml(
-                                    sub.userName
-                                )}
+                    ${escapeHtml(
+                            sub.userName || ""
+                        )}
 
-                            </div>
+                </div>
 
-                        `;
+            `;
 
                     });
-
 
                     // ---------------------------------------------
                     // PARENT ROW

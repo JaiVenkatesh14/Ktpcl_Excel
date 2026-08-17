@@ -11,16 +11,28 @@
       "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\controllers\\databasehealthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\controllers\\databasehealthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\services\\excelimportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\services\\excelimportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\models\\excelimportresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\models\\excelimportresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\models\\linecodedetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\models\\linecodedetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|e:\\kptcl_excel\\ktpcl_excel\\kptcl_excel_load\\controllers\\databasehealthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38E1AD0D-838C-E9D6-FC74-D251701AB933}|Kptcl_Excel_Load\\Kptcl_Excel_Load.csproj|solutionrelative:kptcl_excel_load\\controllers\\databasehealthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,7 +46,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "DatabaseHealthController.cs",
               "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Controllers\\DatabaseHealthController.cs",
               "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Controllers\\DatabaseHealthController.cs",
@@ -43,11 +55,12 @@
               "ViewState": "AgIAACsAAAAAAAAAAAAUwDwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-10T11:46:23.925Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "appsettings.json",
               "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\appsettings.json",
               "RelativeDocumentMoniker": "Kptcl_Excel_Load\\appsettings.json",
@@ -60,15 +73,17 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Kptcl_Excel_Load\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAMEAAAAAAAAAAAAlwMYAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-10T08:58:20.208Z"
+              "DocumentIndex": 3,
+              "Title": "ExcelImportService.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Services\\ExcelImportService.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Services\\ExcelImportService.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Services\\ExcelImportService.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Services\\ExcelImportService.cs",
+              "ViewState": "AgIAALMFAAAAAAAAAAAhwLwFAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-12T10:38:25.84Z",
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -78,7 +93,7 @@
               "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Views\\Home\\Index.cshtml",
               "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Views\\Home\\Index.cshtml",
               "RelativeToolTip": "Kptcl_Excel_Load\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAG0AAAAAAAAAAAAuwHsAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAK8CAAAAAAAAAAAuwMICAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-08-10T08:58:40.248Z",
               "EditorCaption": ""
@@ -91,10 +106,46 @@
               "RelativeDocumentMoniker": "Kptcl_Excel_Load\\wwwroot\\css\\site.css",
               "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\wwwroot\\css\\site.css",
               "RelativeToolTip": "Kptcl_Excel_Load\\wwwroot\\css\\site.css",
-              "ViewState": "AgIAAHQGAAAAAAAAAAAswIEGAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAAcGAAAAAAAAAAArwBUGAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
               "WhenOpened": "2026-08-10T08:59:36.242Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ExcelImportResult.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Models\\ExcelImportResult.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Models\\ExcelImportResult.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Models\\ExcelImportResult.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Models\\ExcelImportResult.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAqwCYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-12T10:40:38.712Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "LineCodeDetails.cs",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Models\\LineCodeDetails.cs",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Models\\LineCodeDetails.cs",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Models\\LineCodeDetails.cs",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Models\\LineCodeDetails.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-12T10:40:37.2Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Kptcl_Excel_Load\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "E:\\Kptcl_Excel\\Ktpcl_Excel\\Kptcl_Excel_Load\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Kptcl_Excel_Load\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAMEAAAAAAAAAAAAlwMYAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-10T08:58:20.208Z"
             }
           ]
         }

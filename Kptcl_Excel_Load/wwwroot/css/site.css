@@ -908,7 +908,7 @@ tbody tr:hover {
     }
 
     .work-table .col-user {
-        width: 140px;
+        width: 230px;
     }
 
     .work-table .col-status {
@@ -1543,23 +1543,23 @@ tbody tr:hover {
 
 .work-users {
     width: 100%;
-    min-width: 0;
+    padding-top: 78px;
 }
 
-
 .work-user-item {
-    color: #33475e;
+    min-height: 58px;
+    margin-top: 12px;
+    padding: 8px 0;
+    color: #42526a;
     font-size: 11px;
-    line-height: 1.6;
-    margin-bottom: 15px;
+    line-height: 1.5;
     white-space: normal;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     word-break: normal;
 }
 
-
-    .work-user-item:last-child {
-        margin-bottom: 0;
+    .work-user-item:first-child {
+        margin-top: 12px;
     }
 
 
@@ -1589,7 +1589,7 @@ tbody tr:hover {
     }
 
         .work-table .col-user {
-            width: 220px;
+            width: 230px;
         }
 }
 
