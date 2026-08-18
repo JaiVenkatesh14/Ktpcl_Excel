@@ -451,6 +451,7 @@
 @section Scripts {
 
     <script>
+        const appBasePath = '@Url.Content("~/")';
 
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -555,7 +556,7 @@
                 // =================================================
 
                 const response =
-                    await fetch("/api/WorkOrder", {
+                    await fetch(appBasePath + "api/WorkOrder", {
                         method: "GET",
                         headers: {
                             "Accept": "application/json"
@@ -959,7 +960,7 @@ else {
 
 
                 const response =
-                    await fetch("/api/StationDetails", {
+                    await fetch(appBasePath + "api/StationDetails", {
                         method: "GET",
                         headers: {
                             "Accept": "application/json"
@@ -1152,7 +1153,7 @@ else {
 
 
                 const response =
-                    await fetch("/api/LineCodeDetails", {
+                    await fetch(appBasePath + "api/LineCodeDetails", {
                         method: "GET",
                         headers: {
                             "Accept": "application/json"
@@ -1524,7 +1525,7 @@ else {
 
                     const response =
                         await fetch(
-                                    "/api/ExcelImport/validate",
+                            appBasePath + "api/ExcelImport/validate",
                             {
                                 method: "POST",
                                 body: formData

@@ -229,10 +229,6 @@
 
     <script>
 
-            // =====================================================
-            // ORACLE DATABASE STATUS
-            // =====================================================
-
             async function checkDatabaseStatus() {
 
                 const statusText =
@@ -241,18 +237,11 @@
                 const statusDot =
                     document.getElementById("databaseStatusDot");
 
-
                 if (!statusText || !statusDot) {
                     return;
                 }
 
-
-                // ---------------------------------------------
-                // Checking
-                // ---------------------------------------------
-
-                statusText.innerText =
-                    "Checking...";
+                statusText.innerText = "Checking...";
 
                 statusDot.classList.remove(
                     "database-online",
@@ -263,41 +252,26 @@
                     "database-checking"
                 );
 
-
                 try {
 
-                    const response =
-                        await fetch(
-                            "/api/DatabaseHealth",
-                            {
-                                method: "GET",
-                                headers: {
-                                    "Accept": "application/json"
-                                },
-                                cache: "no-store"
-                            }
-                        );
+                    const response = await fetch(
+                        "/api/DatabaseHealth",
+                        {
+                            method: "GET",
+                            headers: {
+                                "Accept": "application/json"
+                            },
+                            cache: "no-store"
+                        }
+                    );
 
+                    const result = await response.json();
 
-                    let result = null;
-
-
-                    try {
-
-                        result =
-                            await response.json();
-
-                    }
-                    catch {
-
-                        result = null;
-
-                    }
-
-
-                    // -----------------------------------------
-                    // Connected
-                    // -----------------------------------------
+                    console.log(
+                        "Database Health:",
+                        response.status,
+                        result
+                    );
 
                     if (
                         response.ok &&
@@ -305,8 +279,7 @@
                         result.connected === true
                     ) {
 
-                        statusText.innerText =
-                            "Connected";
+                        statusText.innerText = "Connected";
 
                         statusDot.classList.remove(
                             "database-checking",
@@ -317,25 +290,20 @@
                             "database-online"
                         );
 
-                        return;
                     }
+                    else {
 
+                        statusText.innerText = "Disconnected";
 
-                    // -----------------------------------------
-                    // Disconnected
-                    // -----------------------------------------
+                        statusDot.classList.remove(
+                            "database-checking",
+                            "database-online"
+                        );
 
-                    statusText.innerText =
-                        "Disconnected";
-
-                    statusDot.classList.remove(
-                        "database-checking",
-                        "database-online"
-                    );
-
-                    statusDot.classList.add(
-                        "database-offline"
-                    );
+                        statusDot.classList.add(
+                            "database-offline"
+                        );
+                    }
 
                 }
                 catch (error) {
@@ -345,10 +313,7 @@
                         error
                     );
 
-
-                    statusText.innerText =
-                        "Disconnected";
-
+                    statusText.innerText = "Disconnected";
 
                     statusDot.classList.remove(
                         "database-checking",
@@ -358,29 +323,19 @@
                     statusDot.classList.add(
                         "database-offline"
                     );
-
                 }
-
             }
 
 
-            // =====================================================
-            // INITIAL CHECK
-            // =====================================================
-
             document.addEventListener(
                 "DOMContentLoaded",
-                function () {
+                function() {
 
                     checkDatabaseStatus();
 
                 }
             );
 
-
-            // =====================================================
-            // CHECK EVERY 30 SECONDS
-            // =====================================================
 
             setInterval(
                 checkDatabaseStatus,
